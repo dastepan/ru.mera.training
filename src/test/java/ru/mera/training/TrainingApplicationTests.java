@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TrainingApplicationTests {
-
+	int var = 12;
 	@Test
 	public void contextLoads() {
 	}
