@@ -40,7 +40,7 @@ public class MenuEntryController {
     @RequestMapping(value = "/shaurma/add/{id}",method = RequestMethod.POST)
     public ResponseEntity<?> add(@PathVariable("id") final Long id) {
 
-        checkShaurma(id);
+        checkOrThrowShaurma(id);
 
         return shaurmaService.optionalIsExist(id)
             .map(ResponseEntity::ok)
@@ -51,7 +51,7 @@ public class MenuEntryController {
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable("id") final Long id) {
 
-        checkMenuEntry(id);
+        checkOrThrowMenuEntry(id);
 
         return menuEntryService.optionalIsExist(id)
             .map(body -> {
@@ -63,13 +63,13 @@ public class MenuEntryController {
 
     // FIXME: There are methods in Hibernate API which looks up for entire DB by primary ke switch to them!
     // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
-    private void checkShaurma(final Long id) {
+    private void checkOrThrowShaurma(final Long id) {
         shaurmaService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExection(String.valueOf(id)));
+            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
     }
 
-    private void checkMenuEntry(final Long id) {
+    private void checkOrThrowMenuEntry(final Long id) {
         menuEntryService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExection(String.valueOf(id)));
+            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
     }
 }

@@ -4,6 +4,7 @@ import ru.mera.sergeynazin.model.Order;
 import ru.mera.sergeynazin.repos.IRepository;
 import ru.mera.sergeynazin.service.OrderService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -60,5 +61,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> optionalIsExist(final Long id) {
         return Optional.of(repository.get(id));
+    }
+
+    @Override
+    public Optional<Order> optionalIsExist(final String orderNumber) {
+
+        final CriteriaBuilder criteriaBuilder = repository.getSession().getCriteriaBuilder();
+        final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+        final Root<Order> ingredientRoot = criteriaQuery.from(Order.class);
+        criteriaQuery.select(ingredientRoot).where(criteriaBuilder.equal(ingredientRoot.get("orderNumber"), orderNumber));
+
+        return Optional.of(repository.uniqueRead(criteriaQuery));
     }
 }

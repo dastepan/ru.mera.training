@@ -25,4 +25,5 @@ public interface OrderService {
     void delete(Order persistentEntity);
     boolean tryDelete(Long id);
     Optional<Order> optionalIsExist(Long id);
+    Optional<Order> optionalIsExist(String orderNumber);
 }

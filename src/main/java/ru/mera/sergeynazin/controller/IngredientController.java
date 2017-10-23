@@ -59,11 +59,11 @@ public class IngredientController {
     // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowByName(final String name) {
         ingredientService.optionalIsExist(name)
-            .orElseThrow(() -> new NotFoundExection(name));
+            .orElseThrow(() -> new NotFoundExeption(name));
     }
 
     private void checkOrThrowById(final Long id) {
         ingredientService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExection(String.valueOf(id)));
+            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
     }
 }

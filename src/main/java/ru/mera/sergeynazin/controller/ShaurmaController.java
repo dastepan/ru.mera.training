@@ -79,6 +79,6 @@ public class ShaurmaController {
     // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrow(final Long id) {
         shaurmaService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExection(String.valueOf(id)));
+            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
     }
 }
