@@ -1,0 +1,108 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:hibernate.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties" />
+
+    <!-- Annotatopns like @Transactional -->
+    <!--<tx:annotation-driven/>-->
+
+    <!-- HibernateTransactionManager -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--FIXME: Delete !-->
+<!--    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>-->
+<!-- TODO: NON Production!   -->
+<!--    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>-->
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- SessionFactory settings for Hibernate -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml" />
+        <property name="hibernateProperties" >
+            <props>
+                <!-- @author sergeynazin. Defines whether my getSession() in IRepository will return a local threaded Session or else -->
+                <prop key="hibernate.current_session_context_class">thread</prop>
+
+                <!-- Print all SQL to stdout. -->
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+
+                <!-- DO NOT Drop and then re-create schema on SessionFactory build, for testing.
+                 todo switch to "create"
+                 -->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.connection.charSet">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+<!--TODO: DELETE !! Do we need this postprocessor (expesially for Hib-te 5.x?) ?-->
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+    <!-- My DATA -->
+    <bean id="repository" abstract="true" >
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+        <property name="clazz" ref="ingredient" />
+    </bean>
+
+    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+        <property name="clazz" ref="order" />
+    </bean>
+
+    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+        <property name="clazz" ref="shaurma" />
+    </bean>
+
+    <bean id="orderRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+        <property name="clazz" ref="menuEntry" />
+    </bean>
+
+
+    <bean id="menuEntry" class="ru.mera.sergeynazin.model.MenuEntry" />
+    <bean id="ingredient" class="ru.mera.sergeynazin.model.Ingredient" />
+
+    <bean id="order" class="ru.mera.sergeynazin.model.Order" />
+    <bean id="shaurma" class="ru.mera.sergeynazin.model.Shaurma" />
+
+    <!--My Entities-->
+
+
+
+
+</beans>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns="http://www.springframework.org/schema/mvc"
+             xsi:schemaLocation="
+                http://www.springframework.org/schema/mvc
+                http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- DispatcherServlet Context: определяет настройки одного сервлета; бины,
+        которые доступны только ему -->
+
+    <!-- Spring MVC annotations(@RestController etc.) -->
+    <annotation-driven/>
+
+    <!-- they say statistics, pictures, css, .js, potentially are good to go
+    in some special sepatete resource folder like webapp/resources
+    mapped to /resources/** -->
+    <resources mapping="/resources/**" location="/resources/"/>
+
+    <!-- IF JSP needed /WEB-INF/views -->
+    <beans:bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/pages/"/>
+        <beans:property name="suffix" value=".jsp"/>
+    </beans:bean>
+
+    <!-- TODO: Security  -->
+    <!-- Файл с настройками Security -->
+    <!--<beans:import resource="security.xml"/>-->
+
+    <!-- Localization -->
+    <beans:import resource="local.xml"/>
+
+    <!-- controllers -->
+    <beans:import resource="controllers.xml"/>
+
+</beans:beans>
