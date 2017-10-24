@@ -7,8 +7,9 @@ import ru.mera.sergeynazin.model.Shaurma;
 import ru.mera.sergeynazin.service.OrderService;
 import ru.mera.sergeynazin.service.ShaurmaService;
 
+import java.net.URI;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -28,18 +29,23 @@ public class OrderController {
         this.shaurmaService = shaurmaService;
     }
 
-    @RequestMapping(value = "/{orderNumber}", method = RequestMethod.GET, headers = "Accept=application/json")
-    public ResponseEntity<?> getOrderInfoByIdInJSON(@PathVariable("orderNumber") final String orderNumber) {
-        return getOrderInfo(orderNumber);
+    /**
+     * Just getting the order by
+     * @see Order#orderNumber
+     * @param orderNumber orderNumber from session
+     * @return 200 or 404 (don't know how to send 410)
+     */
+    @GetMapping(value = "/{orderNumber}", produces = "application/json")
+    public ResponseEntity<?> getOrderInfoByOrderNumberInJSON(@PathVariable("orderNumber") final String orderNumber) {
+        return getOrderInfoByOrderNumber(orderNumber);
     }
 
-    // TODO: 10/20/17 XML
-    @RequestMapping(value = "/{orderNumber}", method = RequestMethod.GET, headers = "Accept=application/xml")
-    public ResponseEntity<?> getOrderInfoByIdInXML(@PathVariable("orderNumber") final String orderNumber) {
-        return getOrderInfo(orderNumber);
+    @GetMapping(value = "/{orderNumber}", produces = "application/xml")
+    public ResponseEntity<?> getOrderInfoByOrderNumberInXML(@PathVariable("orderNumber") final String orderNumber) {
+        return getOrderInfoByOrderNumber(orderNumber);
     }
 
-    private ResponseEntity<?> getOrderInfo(final String orderNumber) {
+    private ResponseEntity<?> getOrderInfoByOrderNumber(final String orderNumber) {
         checkOrThrowOrderByName(orderNumber);
         return orderService.optionalIsExist(orderNumber)
             .map(ResponseEntity::ok)
@@ -48,35 +54,36 @@ public class OrderController {
 
     // TODO: Do I need value = "/" ???
     // TODO: Aspect
-    @RequestMapping(value = "/all", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<Order> getAllOrdersInJSON() {
-        return orderService.getAll();
+    @GetMapping(value = "/all", produces = "application/json")
+    public ResponseEntity<Collection<Order>> getAllOrdersInJSON() {
+        return ResponseEntity.ok(orderService.getAll());
     }
 
     // TODO: 10/20/17 XML
     // TODO: Do I need value = "/" ???
     // TODO: Aspect
-    @RequestMapping(value = "/all", method = RequestMethod.GET, headers = "Accept=application/xml")
-    public List<Order> getAllOrdersInXML() {
-        return orderService.getAll();
+    @GetMapping(value = "/all", produces = "application/xml")
+    public ResponseEntity<Collection<Order>> getAllOrdersInXML() {
+        return ResponseEntity.ok(orderService.getAll());
     }
 
     // TODO: Is that value = "/" we need here?
     // TODO: 10/20/17 Aspect
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping(value = "/", consumes = {"application/json" , "application/xml"})
     public ResponseEntity<?> add(@RequestBody final Order order) {
         orderService.save(order);
         return ResponseEntity.ok(order);
     }
 
+    // TODO: Produces!!
     // TODO: 10/20/17 Aspect
-    @RequestMapping(value = "/order/{orderid}/add/{shaurmaid}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = "application/json")
     public ResponseEntity<?> updateOrderInJson(@PathVariable(value = "orderid") Long orderId,
                                                @PathVariable(value = "shaurmaid") Long shaurmaId) {
         return updateOrder(orderId, shaurmaId);
     }
     // TODO: 10/20/17 Aspect
-    @RequestMapping(value = "/order/{orderid}/add/{shaurmaid}", method = RequestMethod.PUT, headers = "Accept=application/xml")
+    @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = "application/xml")
     public ResponseEntity<?> updateOrderInXML(@PathVariable(value = "orderid") Long orderId,
                                               @PathVariable(value = "shaurmaid") Long shaurmaId) {
         return updateOrder(orderId, shaurmaId);
@@ -100,20 +107,39 @@ public class OrderController {
                         order.setShaurmaSet(shaurmaSet);
                     });
                 orderService.save(order);
-                return ResponseEntity.ok(order);
+                return ResponseEntity.created(URI.create(order.getOrderNumber())).body(order);
             });
     }
 
-    // TODO: 10/20/17 Aspect
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public void deleteOrderInJson(@PathVariable("id") final Long id) {
-        orderService.tryDelete(id);
+
+    /**
+     * NOT NESSESARY METHOD As the <code>bean</code> is session scooped
+     * @param id order id from db
+     * @return 200 or 404
+     */
+    @DeleteMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<?> deleteOrderInJson(@PathVariable("id") final Long id) {
+        return delete(id);
     }
-    // TODO: 10/20/17 Aspect
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE, headers = "Accept=application/xml")
-    public void deleteOrderInXML(@PathVariable("id") final Long id) {
-        orderService.tryDelete(id);
+
+    @DeleteMapping(value = "/{id}", produces = "application/xml")
+    public ResponseEntity<?> deleteOrderInXML(@PathVariable("id") final Long id) {
+        return delete(id);
     }
+
+    // TODO: 10/20/17 Aspect
+    private ResponseEntity<?> delete(Long id) {
+
+        checkOrThrowOrderById(id);
+
+        return orderService.optionalIsExist(id)
+            .map(order -> {
+                orderService.tryDelete(id);
+                return ResponseEntity.ok(order);
+            }).orElse(ResponseEntity.notFound().build());
+    }
+
+
 
     // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowShaurma(final Long id) {
