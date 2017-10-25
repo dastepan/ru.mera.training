@@ -1,7 +1,5 @@
 package ru.mera.sergeynazin.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,10 +8,12 @@ public class MenuEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false, insertable = false, updatable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @JsonIgnore
+    // TODO: Do I need @Column(columnDefinition = "string") ????
+    //@MapsId // TODO: they say this one may cause problems
+    //@JoinColumn(name = "shaurma_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @PrimaryKeyJoinColumn(name = "shaurma_id", referencedColumnName = "id")
     private Shaurma shaurma;

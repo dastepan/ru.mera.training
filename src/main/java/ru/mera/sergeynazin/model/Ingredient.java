@@ -1,6 +1,9 @@
 package ru.mera.sergeynazin.model;
 
+import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 // FIXME: 10/20/17 hashCode + equals
 @Entity
@@ -9,10 +12,11 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, insertable = false, updatable = false)
+    @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
     @Column(length = 45)
+    @Nationalized
     private String name;
 
     @org.hibernate.annotations.Type(type = "big_decimal")
@@ -47,4 +51,26 @@ public class Ingredient {
     public void setCost(Double cost) {
         this.cost = cost;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        Ingredient ingredient = (Ingredient) o;
+
+        return Objects.equals(this.name, ingredient.name)
+            && Objects.equals(this.id, ingredient.id)
+            && Objects.equals(this.cost, ingredient.cost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.name, this.id, this.cost);
+    }
+
 }
