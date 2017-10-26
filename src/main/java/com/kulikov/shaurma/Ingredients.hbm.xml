@@ -1,0 +1,14 @@
+<hibernate-mapping>
+    <class name="com.kulikov.shaurma.Ingredients" table="ingredients">
+        <id column="ingredients_id" name="id" type="int">
+        <generator class="identity"/>
+        </id>
+        <property column="name" name="name" type="string"/>
+        <property column="cost" name="cost" type="double"/>
+        <set name="shaurmas" table="ingredient_has_shaurma" lazy="true">
+            <key column="ingredients_id"/>
+            <many-to-many column="shaurma_id" class="com.kulikov.shaurma.Shaurma" />
+        </set>
+
+    </class>
+</hibernate-mapping>
