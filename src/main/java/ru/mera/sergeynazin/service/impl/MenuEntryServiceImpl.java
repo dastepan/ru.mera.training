@@ -60,20 +60,29 @@ public class MenuEntryServiceImpl implements MenuEntryService {
         repository.deleteItem(persistentMenuEntry);
     }
 
+    /**
+     * @see MenuEntryServiceImpl#optionalIsExist(Long)
+     */
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("MenuEntryServiceImpl::tryDelete() called with: id = [" + id + "]");
-        final MenuEntry menuEntry = repository.get(id);
-        if (menuEntry != null) {
-            repository.deleteItem(menuEntry);
-            return true;
-        }
-        else return false;
+        return repository.get(id)
+            .map(menuEntry -> {
+                repository.deleteItem(menuEntry);
+                return true;
+            }).orElse(false);
     }
 
+    /**
+     * Hibernate 5.2.x providing support of Optional so we switch to that
+     * otherwise can uncomment lines below
+     * @param id Primary Key
+     * @return Optional.of(MenuEntry_managed_instance)
+     */
     @Override
     public Optional<MenuEntry> optionalIsExist(final Long id) {
         logger.info("MenuEntryServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return Optional.of(repository.get(id));
+        return repository.get(id);
+            // Optional.of(repository.get(id));
     }
 }

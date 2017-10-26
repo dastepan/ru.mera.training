@@ -57,15 +57,17 @@ public class IngredientServiceImpl implements IngredientService {
         repository.deleteItem(persistentIngredient);
     }
 
+    /**
+     * @see IngredientServiceImpl#optionalIsExist(Long)
+     */
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("IngredientServiceImpl::tryDelete() called with: id = [" + id + "]");
-        final Ingredient ingredient = repository.get(id);
-        if (ingredient != null) {
-            repository.deleteItem(ingredient);
-            return true;
-        }
-        else return false;
+        return repository.get(id)
+            .map(ingredient -> {
+                repository.deleteItem(ingredient);
+                return true;
+            }).orElse(false);
     }
 
     @Override
@@ -79,9 +81,16 @@ public class IngredientServiceImpl implements IngredientService {
         return Optional.of(repository.uniqueRead(criteriaQuery));
     }
 
+    /**
+     * Hibernate 5.2.x providing support of Optional so we switch to that
+     * otherwise can uncomment lines below
+     * @param id Primary Key
+     * @return Optional.of(Ingredient_managed_instance)
+     */
     @Override
-    public Optional<Ingredient> optionalIsExist(Long id) {
+    public Optional<Ingredient> optionalIsExist(final Long id) {
         logger.info("IngredientServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return Optional.of(repository.get(id));
+        return repository.get(id);
+            // Optional.of(repository.get(id));
     }
 }

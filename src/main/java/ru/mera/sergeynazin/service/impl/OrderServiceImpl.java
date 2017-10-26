@@ -60,22 +60,32 @@ public class OrderServiceImpl implements OrderService {
         repository.deleteItem(persistentOrder);
     }
 
+    /**
+     * @see OrderServiceImpl#optionalIsExist(Long)
+     */
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("OrderServiceImpl::tryDelete() called with: id = [" + id + "]");
-        final Order order = repository.get(id);
-        if (order != null) {
-            repository.deleteItem(order);
-            return true;
-        }
-        else return false;
+        return repository.get(id)
+            .map(order -> {
+                repository.deleteItem(order);
+                return true;
+            }).orElse(false);
     }
 
+    /**
+     * Hibernate 5.2.x providing support of Optional so we switch to that
+     * otherwise can uncomment lines below
+     * @param id Primary Key
+     * @return Optional.of(Order_managed_instance)
+     */
     @Override
     public Optional<Order> optionalIsExist(final Long id) {
         logger.info("OrderServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return Optional.of(repository.get(id));
+        return repository.get(id);
+            // Optional.of(repository.get(id));
     }
+
 
     @Override
     public Optional<Order> optionalIsExist(final String orderNumber) {

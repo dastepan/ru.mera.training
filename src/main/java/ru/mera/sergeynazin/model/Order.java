@@ -2,12 +2,13 @@ package ru.mera.sergeynazin.model;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "'order'")
+@Table(name = "\"order\"")
 public class Order {
 
     @Id
@@ -16,17 +17,20 @@ public class Order {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    /**
+     * Even though the queries by natural Id is not used in service
+     * implementations here, this could become a staring point for that
+     */
+    @NaturalId
     @Generated(GenerationTime.INSERT)
     @Column(        // TODO: Insertable seems to be redundant
+        length = 32,
         unique = true,
         nullable = false,
         updatable = false,
-        columnDefinition = "VARCHAR(32) AS CONCAT(" +
-                                "CURRENT_DATE, " +
-                                "'_'," +
-                                " SUM( " +
-                                        "1, " +
-                                        "(SELECT MAX(id) FROM 'order' WHERE id LIKE CONCAT(CURRENT_DATE, '%'))))"
+        columnDefinition =
+//            "VARCHAR(32) NOT NULL UNIQUE" + // TODO: Check if Hibernate constraints will be overridedn with "AS ... "
+            "AS CONCAT(CURRENT_DATE, '_', SUM( 1, (SELECT MAX(id) FROM \"order\" WHERE id LIKE CONCAT(CURRENT_DATE, '%'))))"
     )
     private String orderNumber;
 

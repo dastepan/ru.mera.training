@@ -60,20 +60,29 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         repository.deleteItem(persistentShaurma);
     }
 
+    /**
+     * @see ShaurmaServiceImpl#optionalIsExist(Long)
+     */
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("ShaurmaServiceImpl::tryDelete() called with: id = [" + id + "]");
-        final Shaurma shaurma = repository.get(id);
-        if (shaurma != null) {
-            repository.deleteItem(shaurma);
-            return true;
-        }
-        else return false;
+        return repository.get(id)
+            .map(shaurma -> {
+                repository.deleteItem(shaurma);
+                return true;
+            }).orElse(false);
     }
 
+    /**
+     * Hibernate 5.2.x providing support of Optional so we switch to that
+     * otherwise can uncomment lines below
+     * @param id Primary Key
+     * @return Optional.of(Shaurma_managed_instance)
+     */
     @Override
     public Optional<Shaurma> optionalIsExist(final Long id) {
         logger.info("ShaurmaServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return Optional.of(repository.get(id));
+        return repository.get(id);
+            //Optional.of(repository.get(id));
     }
 }
