@@ -80,16 +80,22 @@ public class OrderController {
     @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = "application/json")
     public ResponseEntity<?> updateOrderInJson(@PathVariable(value = "orderid") Long orderId,
                                                @PathVariable(value = "shaurmaid") Long shaurmaId) {
-        return updateOrder(orderId, shaurmaId);
+        return updateOrCreateOrder(orderId, shaurmaId);
     }
     // TODO: 10/20/17 Aspect
     @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = "application/xml")
     public ResponseEntity<?> updateOrderInXML(@PathVariable(value = "orderid") Long orderId,
                                               @PathVariable(value = "shaurmaid") Long shaurmaId) {
-        return updateOrder(orderId, shaurmaId);
+        return updateOrCreateOrder(orderId, shaurmaId);
     }
 
-    private ResponseEntity<?> updateOrder(Long orderId, Long shaurmaId) {
+    /**
+     * updates or creates the Order with the given ID.
+     * @param orderId {@link Order#getOrderNumber()}
+     * @param shaurmaId {@link Shaurma#getId()}
+     * @return 200 or 201
+     */
+    private ResponseEntity<?> updateOrCreateOrder(Long orderId, Long shaurmaId) {
         checkOrThrowOrderById(orderId);
         return orderService.optionalIsExist(orderId)
             .map((Function<Order, ResponseEntity<?>>) order -> {

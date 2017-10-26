@@ -77,19 +77,19 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
         <property name="clazz" ref="ingredient" />
     </bean>
 
-    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
         <property name="clazz" ref="order" />
     </bean>
 
-    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
         <property name="clazz" ref="shaurma" />
     </bean>
 
-    <bean id="orderRepository" class="ru.mera.sergeynazin.repos.impl.IRepositoryImpl" parent="repository" >
+    <bean id="orderRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
         <property name="clazz" ref="menuEntry" />
     </bean>
 

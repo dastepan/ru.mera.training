@@ -35,18 +35,18 @@ public class IngredientController {
     // FIXME:
     // FIXME:// FIXME:// FIXME:// FIXME:// FIXME:// FIXME:
 
-//    // FIXME: Does this one meant to be a CREATING and SAVE newly created ingredient by shaurmamaker???
-//    // TODO: 10/20/17 Aspect
-//    @PostMapping(value = "/ingredients/create/{ingredientName}", consumes = {"application/json" , "application/xml"})
-//    public ResponseEntity<?> createNew(@PathVariable("ingredientName") final String ingredientName, @RequestBody final Ingredient ingredient) {
-//
-//        return ingredientService.optionalIsExist(ingredientName)
-//            .map(ResponseEntity.unprocessableEntity()::body)
-//            .orElseGet(() -> {
-//                ingredientService.save(ingredient);
-//                return ResponseEntity.noContent().build();
-//            });
-//    }
+    // FIXME: Does this one meant to be a CREATING and SAVE newly created ingredient by shaurmamaker???
+    // TODO: 10/20/17 Aspect
+    @PostMapping(value = "/ingredients/create/{ingredientName}", consumes = {"application/json" , "application/xml"})
+    public ResponseEntity<?> createNew(@PathVariable("ingredientName") final String ingredientName, @RequestBody final Ingredient ingredient) {
+
+        return ingredientService.optionalIsExist(ingredientName)
+            .map(ResponseEntity.unprocessableEntity()::body)
+            .orElseGet(() -> {
+                ingredientService.save(ingredient);
+                return ResponseEntity.noContent().build();
+            });
+    }
 
     @PostMapping(value = "/ingredients/add/{ingredientName}", consumes = {"application/json" , "application/xml"})
     public ResponseEntity<?> add(@PathVariable("ingredientName") final String ingredientName, @RequestBody final Ingredient ingredient) {

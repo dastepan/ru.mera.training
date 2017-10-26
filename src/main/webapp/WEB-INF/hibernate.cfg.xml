@@ -9,5 +9,6 @@
         <mapping class="ru.mera.sergeynazin.model.Shaurma" />
         <mapping class="ru.mera.sergeynazin.model.MenuEntry" />
         <mapping class="ru.mera.sergeynazin.model.Order" />
+        <mapping class="ru.mera.sergeynazin.model.Order.OrderNumber" />
     </session-factory>
 </hibernate-configuration>

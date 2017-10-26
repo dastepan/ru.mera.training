@@ -1,7 +1,7 @@
 package ru.mera.sergeynazin.service;
 
 import ru.mera.sergeynazin.model.MenuEntry;
-import ru.mera.sergeynazin.repos.IRepository;
+import ru.mera.sergeynazin.repository.IRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
