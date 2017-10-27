@@ -4,8 +4,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public interface ICRUDRepository {
-    <T> void createItem(T item);
-    <T> List readItems(CriteriaQuery<T> criteriaQuery);
-    <T> void updateItem(T item);
-    <T> void deleteItem(T item);
+    <T> void create(T entityWithoutPrimaryKey);
+    <T> List read(CriteriaQuery<T> criteriaQuery);
+    <T> void update(T entityWithPrimaryKey);
+    <T> void delete(T entityWithPrimaryKey);
 }

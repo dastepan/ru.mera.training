@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void save(final Order order) {
         logger.info("OrderServiceImpl::save() called with: order = [" + order + "]");
-        repository.createItem(order);
+        repository.create(order);
     }
 
     @Override
@@ -44,20 +44,20 @@ public class OrderServiceImpl implements OrderService {
         CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();
         Root<Order> root = criteriaQuery.from(Order.class);
         criteriaQuery.select(root);
-        return repository.readItems(criteriaQuery);
+        return repository.read(criteriaQuery);
     }
 
 
     @Override
     public void update(final Order detachedEntity) {
         logger.info("OrderServiceImpl::update() called with: detachedEntity = [" + detachedEntity + "]");
-        repository.updateItem(detachedEntity);
+        repository.update(detachedEntity);
     }
 
     @Override
     public void delete(final Order persistentOrder) {
         logger.info("OrderServiceImpl::delete() called with: persistentOrder = [" + persistentOrder + "]");
-        repository.deleteItem(persistentOrder);
+        repository.delete(persistentOrder);
     }
 
     /**
@@ -66,23 +66,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("OrderServiceImpl::tryDelete() called with: id = [" + id + "]");
-        return repository.get(id)
+        return repository.getOptional(id)
             .map(order -> {
-                repository.deleteItem(order);
+                repository.delete(order);
                 return true;
             }).orElse(false);
     }
 
     /**
+     * Originally I used commented line as returning value
      * Hibernate 5.2.x providing support of Optional so we switch to that
-     * otherwise can uncomment lines below
+     * otherwise can uncomment line below
      * @param id Primary Key
      * @return Optional.of(Order_managed_instance)
      */
     @Override
     public Optional<Order> optionalIsExist(final Long id) {
         logger.info("OrderServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return repository.get(id);
+        return repository.getOptional(id);
             // Optional.of(repository.get(id));
     }
 
@@ -97,4 +98,6 @@ public class OrderServiceImpl implements OrderService {
 
         return Optional.of(repository.uniqueRead(criteriaQuery));
     }
+
+
 }

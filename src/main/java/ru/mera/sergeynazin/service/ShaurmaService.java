@@ -3,6 +3,7 @@ package ru.mera.sergeynazin.service;
 import ru.mera.sergeynazin.model.Shaurma;
 import ru.mera.sergeynazin.repository.IRepository;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +17,23 @@ import java.util.Optional;
 
 public interface ShaurmaService {
 
-    void save(Shaurma shaurma);
+    Serializable save(Shaurma shaurma);
     List<Shaurma> getAll();
     /**
      * This one ONLY when you, say, already POSTed or smth alike, so that entity is supposedly persistent
      */
-    Shaurma loadAsPersistent(Long id);
+    Shaurma loadAsPersistent(Serializable id);
     void update(Shaurma detachedEntity);
+
+    /**
+     *
+     * @param detachedNewStatefulEntityWithoutId detached New Stateful Entity WithoutId
+     * @return persistent Shaurma with updated state
+     */
+    Shaurma updateShaurmaStateInDb(Long id, Shaurma detachedNewStatefulEntityWithoutId);
+
     void delete(Shaurma persistentEntity);
     boolean tryDelete(Long id);
     Optional<Shaurma> optionalIsExist(Long id);
+
 }

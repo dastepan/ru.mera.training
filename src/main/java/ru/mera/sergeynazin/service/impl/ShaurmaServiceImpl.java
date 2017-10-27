@@ -8,6 +8,7 @@ import ru.mera.sergeynazin.service.ShaurmaService;
 
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,14 +26,20 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         this.repository = repository;
     }
 
+    /**
+     * For educational purposes this is done not directly, like repository.getSession().save(shaurma)
+      * @param shaurma transient newly created entity
+     * @return newly assigned primary key of entity after making it managed by calling getId() straight after persist()
+     */
     @Override
-    public void save(final Shaurma shaurma) {
+    public Serializable save(final Shaurma shaurma) {
         logger.info("ShaurmaServiceImpl::save() called with: shaurma = [" + shaurma + "]");
-        repository.createItem(shaurma);
+        repository.persist(shaurma);
+        return shaurma.getId();
     }
 
     @Override
-    public Shaurma loadAsPersistent(final Long id) {
+    public Shaurma loadAsPersistent(final Serializable id) {
         logger.info("loadAsPersistent() called with: id = [" + id + "]");
         return repository.load(id);
     }
@@ -44,20 +51,26 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         CriteriaQuery<Shaurma>  criteriaQuery = repository.myCriteriaQuery();
         Root<Shaurma> root = criteriaQuery.from(Shaurma.class);
         criteriaQuery.select(root);
-        return repository.readItems(criteriaQuery);
+        return repository.read(criteriaQuery);
     }
 
 
     @Override
     public void update(final Shaurma detachedEntity) {
-        logger.info("ShaurmaServiceImpl::update() called with: detachedEntity = [" + detachedEntity + "]");
-        repository.updateItem(detachedEntity);
+        repository.update(detachedEntity);
+    }
+
+    @Override
+    public Shaurma updateShaurmaStateInDb(final Long idGuarantiedIsInDb,
+                                          final Shaurma detachedNewStatefulEntityWithoutId) {
+        detachedNewStatefulEntityWithoutId.setId(idGuarantiedIsInDb);
+        return repository.mergeStateWithDbEntity(detachedNewStatefulEntityWithoutId);
     }
 
     @Override
     public void delete(final Shaurma persistentShaurma) {
         logger.info("ShaurmaServiceImpl::delete() called with: persistentShaurma = [" + persistentShaurma + "]");
-        repository.deleteItem(persistentShaurma);
+        repository.delete(persistentShaurma);
     }
 
     /**
@@ -66,9 +79,9 @@ public class ShaurmaServiceImpl implements ShaurmaService {
     @Override
     public boolean tryDelete(final Long id) {
         logger.info("ShaurmaServiceImpl::tryDelete() called with: id = [" + id + "]");
-        return repository.get(id)
+        return repository.getOptional(id)
             .map(shaurma -> {
-                repository.deleteItem(shaurma);
+                repository.delete(shaurma);
                 return true;
             }).orElse(false);
     }
@@ -82,7 +95,7 @@ public class ShaurmaServiceImpl implements ShaurmaService {
     @Override
     public Optional<Shaurma> optionalIsExist(final Long id) {
         logger.info("ShaurmaServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return repository.get(id);
-            //Optional.of(repository.get(id));
+        return repository.getOptional(id);
+            //Optional.of(repository.getOptional(id));
     }
 }

@@ -18,13 +18,8 @@ import java.util.Optional;
 public interface IngredientService {
     void save(Ingredient ingredient);
     List<Ingredient> getAll();
-    /**
-     * This one ONLY when you, say, already POSTed or smth alike, so that entity is supposedly persistent
-     */
-    Ingredient loadAsPersistent(Long id);
     void update(Ingredient detachedEntity);
     void delete(Ingredient persistentEntity);
-    boolean tryDelete(Long id);
     Optional<Ingredient> optionalIsExist(String name);
     Optional<Ingredient> optionalIsExist(Long id);
 }

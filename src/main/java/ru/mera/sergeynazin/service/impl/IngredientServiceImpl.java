@@ -26,13 +26,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public void save(final Ingredient ingredient) {
         logger.info("IngredientServiceImpl::save() called with: ingredient = [" + ingredient + "]");
-        repository.createItem(ingredient);
-    }
-
-    @Override
-    public Ingredient loadAsPersistent(final Long id) {
-        logger.info("IngredientServiceImpl::loadAsPersistent() called with: id = [" + id + "]");
-        return repository.load(id);
+        repository.create(ingredient);
     }
 
     @SuppressWarnings("unchecked")
@@ -42,33 +36,21 @@ public class IngredientServiceImpl implements IngredientService {
         final CriteriaQuery<Ingredient> criteriaQuery = repository.myCriteriaQuery();
         final Root<Ingredient> root = criteriaQuery.from(Ingredient.class);
         criteriaQuery.select(root);
-        return repository.readItems(criteriaQuery);
+        return repository.read(criteriaQuery);
     }
 
     @Override
     public void update(final Ingredient detachedEntity) {
         logger.info("IngredientServiceImpl::update() called with: detachedEntity = [" + detachedEntity + "]");
-        repository.updateItem(detachedEntity);
+        repository.update(detachedEntity);
     }
 
     @Override
     public void delete(final Ingredient persistentIngredient) {
         logger.info("IngredientServiceImpl::delete() called with: persistentIngredient = [" + persistentIngredient + "]");
-        repository.deleteItem(persistentIngredient);
+        repository.delete(persistentIngredient);
     }
 
-    /**
-     * @see IngredientServiceImpl#optionalIsExist(Long)
-     */
-    @Override
-    public boolean tryDelete(final Long id) {
-        logger.info("IngredientServiceImpl::tryDelete() called with: id = [" + id + "]");
-        return repository.get(id)
-            .map(ingredient -> {
-                repository.deleteItem(ingredient);
-                return true;
-            }).orElse(false);
-    }
 
     @Override
     public Optional<Ingredient> optionalIsExist(final String name) {
@@ -90,7 +72,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Optional<Ingredient> optionalIsExist(final Long id) {
         logger.info("IngredientServiceImpl::optionalIsExist() called with: id = [" + id + "]");
-        return repository.get(id);
+        return repository.getOptional(id);
             // Optional.of(repository.get(id));
     }
 }
