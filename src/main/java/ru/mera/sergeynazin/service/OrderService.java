@@ -17,13 +17,9 @@ import java.util.Optional;
 public interface OrderService {
     void save(Order order);
     List<Order> getAll();
-    /**
-     * This one ONLY when you, say, already POSTed or smth alike, so that entity is supposedly persistent
-     */
     Order loadAsPersistent(Long id);
     void update(Order detachedEntity);
     void delete(Order persistentEntity);
-    boolean tryDelete(Long id);
     Optional<Order> optionalIsExist(Long id);
     Optional<Order> optionalIsExist(String orderNumber);
 }

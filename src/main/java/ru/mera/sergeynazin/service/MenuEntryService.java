@@ -14,16 +14,11 @@ import java.util.Optional;
  * @author sergeynazin
  * */
 
-
 public interface MenuEntryService {
     void save(MenuEntry menuEntry);
     List<MenuEntry> getAll();
-    /**
-     * This one ONLY when you, say, already POSTed or smth alike, so that entity is supposedly persistent
-     */
     MenuEntry loadAsPersistent(Long id);
     void update(MenuEntry detachedEntity);
     void delete(MenuEntry persistentEntity);
-    boolean tryDelete(Long id);
     Optional<MenuEntry> optionalIsExist(Long id);
 }

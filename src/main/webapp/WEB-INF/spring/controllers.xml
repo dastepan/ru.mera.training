@@ -11,4 +11,25 @@
     <!-- Spring MVC annotations(@RestController etc.) -->
     <context:component-scan base-package="ru.mera.sergeynazin.controller"/>
 
+    <bean id="ingredientController" class="ru.mera.sergeynazin.controller.IngredientController">
+        <property name="ingredientService" ref="ingredientServiceImpl" />
+    </bean>
+    <bean id="menuEntryController" class="ru.mera.sergeynazin.controller.MenuEntryController">
+        <property name="menuEntryService" ref="menuEntryServiceImpl" />
+    </bean>
+    <bean id="orderController" class="ru.mera.sergeynazin.controller.OrderController">
+        <property name="orderService" ref="orderServiceImpl" />
+        <property name="currentOrder" ref="sessionOrder" />
+    </bean>
+    <bean id="shaurmaController" class="ru.mera.sergeynazin.controller.ShaurmaController">
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
+    </bean>
+
+    <bean id="ingredientServiceImpl" class="ru.mera.sergeynazin.service.impl.IngredientServiceImpl" />
+    <bean id="menuEntryServiceImpl" class="ru.mera.sergeynazin.service.impl.MenuEntryServiceImpl" />
+    <bean id="orderServiceImpl" class="ru.mera.sergeynazin.service.impl.OrderServiceImpl" />
+    <bean id="shaurmaServiceImpl" class="ru.mera.sergeynazin.service.impl.ShaurmaServiceImpl" />
+
+    <bean id="sessionOrder" class="ru.mera.sergeynazin.model.Order" scope="session" />
+
 </beans>

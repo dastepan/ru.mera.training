@@ -67,7 +67,8 @@ public class ShaurmaController {
     // TODO: 10/20/17 Aspect
     // todo: maybe send the full URI with HttpRequest
     private ResponseEntity<?> add(final Shaurma shaurma) {
-        return ResponseEntity.created(URI.create(shaurmaService.save(shaurma).toString())).build();
+        shaurmaService.save(shaurma);
+        return ResponseEntity.created(URI.create("/" + shaurma.getId())).build();
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

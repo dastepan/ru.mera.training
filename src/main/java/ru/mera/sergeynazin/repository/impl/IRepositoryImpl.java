@@ -19,7 +19,6 @@ public class IRepositoryImpl implements IRepository {
     private Class<?> clazz;
 
     public void setSessionFactory(final SessionFactory sessionFactory) {
-        logger.info("IRepositoryImpl::setSessionFactory() called with: sessionFactory = [" + sessionFactory + "]");
         this.sessionFactory = sessionFactory;
     }
 
@@ -28,20 +27,17 @@ public class IRepositoryImpl implements IRepository {
      * for educational purposes MAY set through constructor but then extending would become non-trivial
      */
     public <T> void setClazz(T entity) {
-        logger.info("IRepositoryImpl::setClazz() called with: entity = [" + entity + "]");
         this.clazz = entity.getClass();
     }
 
     @Override
     public Session getSession() {
-        logger.info("IRepositoryImpl::getSession() called");
         return sessionFactory.getCurrentSession();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> Class<T> getClazz() {
-        logger.info("IRepositoryImpl::getClazz() called");
         return (Class<T>) clazz;
     }
 }

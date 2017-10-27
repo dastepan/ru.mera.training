@@ -16,24 +16,10 @@ import java.util.Optional;
  * */
 
 public interface ShaurmaService {
-
-    Serializable save(Shaurma shaurma);
+    void save(Shaurma shaurma);
     List<Shaurma> getAll();
-    /**
-     * This one ONLY when you, say, already POSTed or smth alike, so that entity is supposedly persistent
-     */
     Shaurma loadAsPersistent(Serializable id);
     void update(Shaurma detachedEntity);
-
-    /**
-     *
-     * @param detachedNewStatefulEntityWithoutId detached New Stateful Entity WithoutId
-     * @return persistent Shaurma with updated state
-     */
-    Shaurma updateShaurmaStateInDb(Long id, Shaurma detachedNewStatefulEntityWithoutId);
-
     void delete(Shaurma persistentEntity);
-    boolean tryDelete(Long id);
     Optional<Shaurma> optionalIsExist(Long id);
-
 }

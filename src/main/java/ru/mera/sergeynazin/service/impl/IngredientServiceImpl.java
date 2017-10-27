@@ -19,20 +19,17 @@ public class IngredientServiceImpl implements IngredientService {
     private IRepository repository;
 
     public void setRepository(final IRepository repository) {
-        logger.info("IngredientServiceImpl::setRepository() called with: repository = [" + repository + "]");
         this.repository = repository;
     }
 
     @Override
     public void save(final Ingredient ingredient) {
-        logger.info("IngredientServiceImpl::save() called with: ingredient = [" + ingredient + "]");
         repository.create(ingredient);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Ingredient> getAll() {
-        logger.info("IngredientServiceImpl::getAll() called");
         final CriteriaQuery<Ingredient> criteriaQuery = repository.myCriteriaQuery();
         final Root<Ingredient> root = criteriaQuery.from(Ingredient.class);
         criteriaQuery.select(root);
@@ -41,20 +38,17 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public void update(final Ingredient detachedEntity) {
-        logger.info("IngredientServiceImpl::update() called with: detachedEntity = [" + detachedEntity + "]");
         repository.update(detachedEntity);
     }
 
     @Override
     public void delete(final Ingredient persistentIngredient) {
-        logger.info("IngredientServiceImpl::delete() called with: persistentIngredient = [" + persistentIngredient + "]");
         repository.delete(persistentIngredient);
     }
 
 
     @Override
     public Optional<Ingredient> optionalIsExist(final String name) {
-        logger.info("IngredientServiceImpl::optionalIsExist() called with: name = [" + name + "]");
         final CriteriaBuilder criteriaBuilder = repository.getSession().getCriteriaBuilder();
         final CriteriaQuery<Ingredient> criteriaQuery = criteriaBuilder.createQuery(Ingredient.class);
         final Root<Ingredient> ingredientRoot = criteriaQuery.from(Ingredient.class);
@@ -71,7 +65,6 @@ public class IngredientServiceImpl implements IngredientService {
      */
     @Override
     public Optional<Ingredient> optionalIsExist(final Long id) {
-        logger.info("IngredientServiceImpl::optionalIsExist() called with: id = [" + id + "]");
         return repository.getOptional(id);
             // Optional.of(repository.get(id));
     }

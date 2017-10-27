@@ -22,13 +22,11 @@ public class OrderServiceImpl implements OrderService {
     private IRepository repository;
 
     public void setRepository(final IRepository repository) {
-        logger.info("OrderServiceImpl::setRepository() called with: repository = [" + repository + "]");
         this.repository = repository;
     }
 
     @Override
     public void save(final Order order) {
-        logger.info("OrderServiceImpl::save() called with: order = [" + order + "]");
         repository.create(order);
     }
 
@@ -40,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
     @SuppressWarnings("unchecked")
     @Override
     public List<Order> getAll() {
-        logger.info("OrderServiceImpl::getAll() called");
         CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();
         Root<Order> root = criteriaQuery.from(Order.class);
         criteriaQuery.select(root);
@@ -50,27 +47,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void update(final Order detachedEntity) {
-        logger.info("OrderServiceImpl::update() called with: detachedEntity = [" + detachedEntity + "]");
         repository.update(detachedEntity);
     }
 
     @Override
     public void delete(final Order persistentOrder) {
-        logger.info("OrderServiceImpl::delete() called with: persistentOrder = [" + persistentOrder + "]");
         repository.delete(persistentOrder);
-    }
-
-    /**
-     * @see OrderServiceImpl#optionalIsExist(Long)
-     */
-    @Override
-    public boolean tryDelete(final Long id) {
-        logger.info("OrderServiceImpl::tryDelete() called with: id = [" + id + "]");
-        return repository.getOptional(id)
-            .map(order -> {
-                repository.delete(order);
-                return true;
-            }).orElse(false);
     }
 
     /**
@@ -82,7 +64,6 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Optional<Order> optionalIsExist(final Long id) {
-        logger.info("OrderServiceImpl::optionalIsExist() called with: id = [" + id + "]");
         return repository.getOptional(id);
             // Optional.of(repository.get(id));
     }
@@ -90,7 +71,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<Order> optionalIsExist(final String orderNumber) {
-        logger.info("OrderServiceImpl::optionalIsExist() called with: orderNumber = [" + orderNumber + "]");
         final CriteriaBuilder criteriaBuilder = repository.getSession().getCriteriaBuilder();
         final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         final Root<Order> ingredientRoot = criteriaQuery.from(Order.class);

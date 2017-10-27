@@ -21,6 +21,11 @@ public class OrderController {
 
     private ShaurmaService shaurmaService;
 
+    private Order currentOrder;
+
+    public void setCurrentOrder(Order currentOrder) {
+        this.currentOrder = currentOrder;
+    }
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
     }
@@ -101,13 +106,15 @@ public class OrderController {
                         order.getShaurmaSet().add(shaurma);
                         return order;
                     }).orElseGet(() -> {
-                        //if no such Order then invoke new one
-                        final Order order = new Order();
-                        final Set<Shaurma> shaurmaSet = new HashSet<>(1);
-                        shaurmaSet.add(shaurma);
-                        order.setShaurmaSet(shaurmaSet);
-                        orderService.save(order);
-                        return order;
+                         if (currentOrder.getShaurmaSet() != null) {
+                             currentOrder.getShaurmaSet().add(shaurma);
+                         } else {
+                             final Set<Shaurma> shaurmaSet = new HashSet<>(1);
+                             shaurmaSet.add(shaurma);
+                             currentOrder.setShaurmaSet(shaurmaSet);
+                             orderService.save(currentOrder);
+                         }
+                        return currentOrder;
                     });
                 return ResponseEntity.created(URI.create(newOrder.getOrderNumber())).body(newOrder);
             }).orElse(ResponseEntity.notFound().build());
