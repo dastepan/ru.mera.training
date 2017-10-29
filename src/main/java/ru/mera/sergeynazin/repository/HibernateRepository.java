@@ -1,7 +1,6 @@
 package ru.mera.sergeynazin.repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.internal.AbstractProducedQuery;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,8 +12,8 @@ import java.util.Optional;
 
 public interface HibernateRepository extends JpaRepository, GenericRepository {
 
-    default <T> Session getSession() {
-        return getEntityManager().getEntityManagerFactory().unwrap( SessionFactory.class ).getCurrentSession();
+    default Session getSession() {
+        return getEntityManager().unwrap(Session.class);
     }
 
     @Override
