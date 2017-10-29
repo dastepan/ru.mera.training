@@ -96,7 +96,7 @@ public class IngredientController {
      * Just testing method
      * @param name name
      */
-    // FIXME: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // FIXME: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowByName(final String name) {
         try {
             ingredientService.optionalIsExist(name).orElseThrow(() -> new NotFoundExeption(name));

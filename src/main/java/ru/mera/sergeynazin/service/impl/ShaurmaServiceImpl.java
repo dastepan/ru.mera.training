@@ -3,12 +3,11 @@ package ru.mera.sergeynazin.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mera.sergeynazin.model.Shaurma;
-import ru.mera.sergeynazin.repository.IRepository;
+import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.ShaurmaService;
 
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,20 +18,20 @@ public class ShaurmaServiceImpl implements ShaurmaService {
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private IRepository repository;
+    private JpaRepository repository;
 
-    public void setRepository(final IRepository repository) {
+    public void setRepository(final JpaRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void save(final Shaurma shaurma) {
-        repository.create(shaurma);
+    public void save(final Shaurma transientEntity) {
+        repository.create(transientEntity);
     }
 
     @Override
-    public Shaurma loadAsPersistent(final Serializable id) {
-        return repository.load(id);
+    public Shaurma loadAsPersistent(final Long id) {
+        return repository.getById(id);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +40,7 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         CriteriaQuery<Shaurma>  criteriaQuery = repository.myCriteriaQuery();
         Root<Shaurma> root = criteriaQuery.from(Shaurma.class);
         criteriaQuery.select(root);
-        return repository.read(criteriaQuery);
+        return repository.getByCriteriaQuery(criteriaQuery);
     }
 
 
@@ -51,8 +50,8 @@ public class ShaurmaServiceImpl implements ShaurmaService {
     }
 
     @Override
-    public void delete(final Shaurma persistentShaurma) {
-        repository.delete(persistentShaurma);
+    public void delete(final Shaurma persistentOrDetachedEntity) {
+        repository.delete(persistentOrDetachedEntity);
     }
 
     /**
@@ -63,7 +62,7 @@ public class ShaurmaServiceImpl implements ShaurmaService {
      */
     @Override
     public Optional<Shaurma> optionalIsExist(final Long id) {
-        return repository.getOptional(id);
-            //Optional.of(repository.getOptional(id));
+        return repository.getOptionalById(id);
+            //Optional.of(repository.getOptionalById(id));
     }
 }

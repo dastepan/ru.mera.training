@@ -1,25 +1,24 @@
 package ru.mera.sergeynazin.service;
 
 import ru.mera.sergeynazin.model.Shaurma;
-import ru.mera.sergeynazin.repository.IRepository;
+import ru.mera.sergeynazin.repository.JpaRepository;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Again, for educational purposes different approach is used here
  * IT COULD BE GENERIFIED AS WELL AS
- * @see IRepository
+ * @see JpaRepository
  *
  * @author sergeynazin
  * */
 
 public interface ShaurmaService {
-    void save(Shaurma shaurma);
+    void save(Shaurma transientEntity);
     List<Shaurma> getAll();
-    Shaurma loadAsPersistent(Serializable id);
+    Shaurma loadAsPersistent(Long id);
     void update(Shaurma detachedEntity);
-    void delete(Shaurma persistentEntity);
+    void delete(Shaurma persistentOrDetachedEntity);
     Optional<Shaurma> optionalIsExist(Long id);
 }

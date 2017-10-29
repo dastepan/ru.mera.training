@@ -3,7 +3,7 @@ package ru.mera.sergeynazin.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mera.sergeynazin.model.Order;
-import ru.mera.sergeynazin.repository.IRepository;
+import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.OrderService;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,20 +19,20 @@ public class OrderServiceImpl implements OrderService {
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private IRepository repository;
+    private JpaRepository repository;
 
-    public void setRepository(final IRepository repository) {
+    public void setRepository(final JpaRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void save(final Order order) {
-        repository.create(order);
+    public void save(final Order transientEntity) {
+        repository.create(transientEntity);
     }
 
     @Override
     public Order loadAsPersistent(final Long id) {
-        return repository.load(id);
+        return repository.getById(id);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();
         Root<Order> root = criteriaQuery.from(Order.class);
         criteriaQuery.select(root);
-        return repository.read(criteriaQuery);
+        return repository.getByCriteriaQuery(criteriaQuery);
     }
 
 
@@ -51,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(final Order persistentOrder) {
-        repository.delete(persistentOrder);
+    public void delete(final Order persistentOrDetachedEntity) {
+        repository.delete(persistentOrDetachedEntity);
     }
 
     /**
@@ -64,19 +64,18 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Optional<Order> optionalIsExist(final Long id) {
-        return repository.getOptional(id);
+        return repository.getOptionalById(id);
             // Optional.of(repository.get(id));
     }
 
-
     @Override
     public Optional<Order> optionalIsExist(final String orderNumber) {
-        final CriteriaBuilder criteriaBuilder = repository.getSession().getCriteriaBuilder();
+        final CriteriaBuilder criteriaBuilder = repository.myCriteriaBuilder();
         final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         final Root<Order> ingredientRoot = criteriaQuery.from(Order.class);
         criteriaQuery.select(ingredientRoot).where(criteriaBuilder.equal(ingredientRoot.get("orderNumber"), orderNumber));
 
-        return Optional.of(repository.uniqueRead(criteriaQuery));
+        return Optional.of(repository.getUniqueByCriteriaQuery(criteriaQuery));
     }
 
 

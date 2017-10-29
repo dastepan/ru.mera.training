@@ -30,6 +30,16 @@
     <bean id="orderServiceImpl" class="ru.mera.sergeynazin.service.impl.OrderServiceImpl" />
     <bean id="shaurmaServiceImpl" class="ru.mera.sergeynazin.service.impl.ShaurmaServiceImpl" />
 
-    <bean id="sessionOrder" class="ru.mera.sergeynazin.model.Order" scope="session" />
+    <bean id="sessionOrder" class="ru.mera.sergeynazin.model.Order" scope="session" >
+        <property name="shaurmaSet" >
+            <set>
+                <bean class="ru.mera.sergeynazin.model.Shaurma" >
+                    <property name="id"><null/></property>
+                    <property name="name"><null/></property>
+                    <property name="ingredientSet"><null/></property>
+                </bean>
+            </set>
+        </property>
+    </bean>
 
 </beans>

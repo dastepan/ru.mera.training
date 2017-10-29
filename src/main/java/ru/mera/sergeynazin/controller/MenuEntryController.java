@@ -84,7 +84,7 @@ public class MenuEntryController {
 
 
     // FIXME: There are methods in Hibernate API which looks up for entire DB by primary ke switch to them!
-    // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowShaurma(final Long id) {
         try {
             shaurmaService.optionalIsExist(id)

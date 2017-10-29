@@ -10,8 +10,6 @@ import ru.mera.sergeynazin.service.ShaurmaService;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/order")
@@ -106,14 +104,9 @@ public class OrderController {
                         order.getShaurmaSet().add(shaurma);
                         return order;
                     }).orElseGet(() -> {
-                         if (currentOrder.getShaurmaSet() != null) {
-                             currentOrder.getShaurmaSet().add(shaurma);
-                         } else {
-                             final Set<Shaurma> shaurmaSet = new HashSet<>(1);
-                             shaurmaSet.add(shaurma);
-                             currentOrder.setShaurmaSet(shaurmaSet);
-                             orderService.save(currentOrder);
-                         }
+                         // @see controllers.xml -> switched to null value shaurma set
+                         currentOrder.getShaurmaSet().add(shaurma);
+                         orderService.save(currentOrder);
                         return currentOrder;
                     });
                 return ResponseEntity.created(URI.create(newOrder.getOrderNumber())).body(newOrder);
@@ -122,7 +115,7 @@ public class OrderController {
 
 
     /**
-     * NOT NESSESARY METHOD As the <code>bean</code> is session scooped
+     * NOT NECESSARY METHOD As if the order is not supposed to be deleted???
      * @param id order id from db
      * @return 200 or 404
      */
@@ -150,21 +143,33 @@ public class OrderController {
      * Helper methods
      * @param id/orderNumber identifier
      */
-    // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ??? (...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowShaurma(final Long id) {
-        shaurmaService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
+        try {
+            shaurmaService.optionalIsExist(id)
+                .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
+        } catch (NotFoundExeption notFoundExeption) {
+            notFoundExeption.printStackTrace();
+        }
     }
 
-    // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowOrderById(final Long id) {
-        orderService.optionalIsExist(id)
-            .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
+        try {
+            orderService.optionalIsExist(id)
+                .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
+        } catch (NotFoundExeption notFoundExeption) {
+            notFoundExeption.printStackTrace();
+        }
     }
 
-    // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowOrderByName(final String orderNumber) {
-        orderService.optionalIsExist(orderNumber)
-            .orElseThrow(() -> new NotFoundExeption(orderNumber));
+        try {
+            orderService.optionalIsExist(orderNumber)
+                .orElseThrow(() -> new NotFoundExeption(orderNumber));
+        } catch (NotFoundExeption notFoundExeption) {
+            notFoundExeption.printStackTrace();
+        }
     }
 }

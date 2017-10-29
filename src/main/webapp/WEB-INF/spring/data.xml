@@ -51,7 +51,7 @@
         <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml" />
         <property name="hibernateProperties" >
             <props>
-                <!-- @author sergeynazin. Defines whether my getSession() in IRepository will return a local threaded Session or else -->
+                <!-- @author sergeynazin. Defines whether my getSession() in JpaRepository will return a local threaded Session or else -->
                 <prop key="hibernate.current_session_context_class">thread</prop>
 
                 <!-- Print all SQL to stdout. -->
@@ -77,19 +77,19 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
+    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
         <property name="clazz" ref="ingredient" />
     </bean>
 
-    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
+    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
         <property name="clazz" ref="order" />
     </bean>
 
-    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
+    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
         <property name="clazz" ref="shaurma" />
     </bean>
 
-    <bean id="orderRepository" class="ru.mera.sergeynazin.repository.impl.IRepositoryImpl" parent="repository" >
+    <bean id="orderRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
         <property name="clazz" ref="menuEntry" />
     </bean>
 
@@ -101,8 +101,6 @@
     <bean id="shaurma" class="ru.mera.sergeynazin.model.Shaurma" />
 
     <!--My Entities-->
-
-
 
 
 </beans>

@@ -119,7 +119,7 @@ public class ShaurmaController {
      * Helper method
      * @param id identifier
      */
-    // TODO: 10/23/17 WHY IGNORED ??? (...- No Handler ?? )witch to security with (also there is Principal)
+    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrow(final Long id) {
         try {
             shaurmaService.optionalIsExist(id)

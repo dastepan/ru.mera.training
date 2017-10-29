@@ -3,7 +3,7 @@ package ru.mera.sergeynazin.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mera.sergeynazin.model.MenuEntry;
-import ru.mera.sergeynazin.repository.IRepository;
+import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.MenuEntryService;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,20 +19,20 @@ public class MenuEntryServiceImpl implements MenuEntryService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private IRepository repository;
+    private JpaRepository repository;
 
-    public void setRepository(final IRepository repository) {
+    public void setRepository(final JpaRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void save(final MenuEntry menuEntry) {
-        repository.create(menuEntry);
+    public void save(final MenuEntry transientEntity) {
+        repository.create(transientEntity);
     }
 
     @Override
     public MenuEntry loadAsPersistent(final Long id) {
-        return repository.load(id);
+        return repository.getById(id);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +41,7 @@ public class MenuEntryServiceImpl implements MenuEntryService {
         CriteriaQuery<MenuEntry>  criteriaQuery = repository.myCriteriaQuery();
         Root<MenuEntry> root = criteriaQuery.from(MenuEntry.class);
         criteriaQuery.select(root);
-        return repository.read(criteriaQuery);
+        return repository.getByCriteriaQuery(criteriaQuery);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class MenuEntryServiceImpl implements MenuEntryService {
     }
 
     @Override
-    public void delete(final MenuEntry persistentMenuEntry) {
-        repository.delete(persistentMenuEntry);
+    public void delete(final MenuEntry persistentOrDetachedEntity) {
+        repository.delete(persistentOrDetachedEntity);
     }
 
     /**
@@ -62,7 +62,7 @@ public class MenuEntryServiceImpl implements MenuEntryService {
      */
     @Override
     public Optional<MenuEntry> optionalIsExist(final Long id) {
-        return repository.getOptional(id);
+        return repository.getOptionalById(id);
             // Optional.of(repository.get(id));
     }
 }
