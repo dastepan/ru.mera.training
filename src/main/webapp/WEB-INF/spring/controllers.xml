@@ -16,9 +16,11 @@
     </bean>
     <bean id="menuEntryController" class="ru.mera.sergeynazin.controller.MenuEntryController">
         <property name="menuEntryService" ref="menuEntryServiceImpl" />
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
     </bean>
     <bean id="orderController" class="ru.mera.sergeynazin.controller.OrderController">
         <property name="orderService" ref="orderServiceImpl" />
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
         <property name="currentOrder" ref="sessionOrder" />
     </bean>
     <bean id="shaurmaController" class="ru.mera.sergeynazin.controller.ShaurmaController">

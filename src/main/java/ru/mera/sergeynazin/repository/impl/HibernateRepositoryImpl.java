@@ -20,7 +20,6 @@ public class HibernateRepositoryImpl implements HibernateRepository {
     private Class<?> clazz;
 
 
-
     public void setSessionFactory(final SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -29,10 +28,9 @@ public class HibernateRepositoryImpl implements HibernateRepository {
     /**
      * for educational purposes MAY set through constructor but then extending would become non-trivial
      */
-    public <T> void setClazz(T entity) {
+    public <T> void setClazz(final T entity) {
         this.clazz = entity.getClass();
     }
-
 
 
     @Override
@@ -40,7 +38,7 @@ public class HibernateRepositoryImpl implements HibernateRepository {
         return sessionFactory.getCurrentSession();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public <T> Class<T> getClazz() {
         return (Class<T>) clazz;

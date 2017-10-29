@@ -16,7 +16,6 @@ import java.util.Optional;
  */
 public interface JpaRepository {
 
-
     // create or save
     <T> Serializable create(T transientEntity);
 
@@ -41,6 +40,5 @@ public interface JpaRepository {
     // helpers
     <T> CriteriaQuery<T> myCriteriaQuery();
     CriteriaBuilder myCriteriaBuilder();
-
 
 }

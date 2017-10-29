@@ -35,7 +35,7 @@ public class MenuEntryServiceImpl implements MenuEntryService {
         return repository.getById(id);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public List<MenuEntry> getAll() {
         CriteriaQuery<MenuEntry>  criteriaQuery = repository.myCriteriaQuery();

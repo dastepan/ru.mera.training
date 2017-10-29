@@ -27,7 +27,6 @@ public class OrderController {
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
     }
-
     public void setShaurmaService(ShaurmaService shaurmaService) {
         this.shaurmaService = shaurmaService;
     }
@@ -130,7 +129,7 @@ public class OrderController {
     }
 
     // TODO: 10/20/17 Aspect
-    private ResponseEntity<?> delete(Long id) {
+    private ResponseEntity<?> delete(final Long id) {
         return orderService.optionalIsExist(id)
             .map(order -> {
                 orderService.delete(order);

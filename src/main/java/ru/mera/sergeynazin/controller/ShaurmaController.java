@@ -94,6 +94,7 @@ public class ShaurmaController {
                 return ResponseEntity.ok(detached);
             }).orElseGet(() -> {
                 shaurmaService.save(detached);
+                // FIXME: Iterate through ingredients
                 return ResponseEntity.created(URI.create("/" + detached.getId())).body(detached);
             });
     }
@@ -107,7 +108,7 @@ public class ShaurmaController {
         return delete(id);
     }
     // TODO: 10/20/17 Aspect
-    private ResponseEntity<?> delete(Long id) {
+    private ResponseEntity<?> delete(final Long id) {
         return shaurmaService.optionalIsExist(id)
             .map(shaurma -> {
                 shaurmaService.delete(shaurma);

@@ -74,7 +74,7 @@ public class MenuEntryController {
      * @return 404 or 200 code with deleted from menu menuEntry body
      */
     // TODO: 10/20/17 Aspect
-    private ResponseEntity<?> delete(Long id) {
+    private ResponseEntity<?> delete(final Long id) {
         return menuEntryService.optionalIsExist(id)
             .map(menuEntry -> {
                 menuEntryService.delete(menuEntry);
@@ -82,7 +82,10 @@ public class MenuEntryController {
             }).orElse(ResponseEntity.notFound().build());
     }
 
-
+    /**
+     * Helper methods
+     * @param id identifier
+     */
     // FIXME: There are methods in Hibernate API which looks up for entire DB by primary ke switch to them!
     // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowShaurma(final Long id) {

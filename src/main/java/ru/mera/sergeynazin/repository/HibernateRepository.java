@@ -41,7 +41,7 @@ public interface HibernateRepository extends JpaRepository, GenericRepository {
     @Override
     default <T> T getUniqueByCriteriaQuery(final CriteriaQuery<T> criteriaQuery) {
         return AbstractProducedQuery.uniqueElement(
-            getSession().createQuery( Objects.requireNonNull(criteriaQuery) ).getResultList());
+            getSession().createQuery(Objects.requireNonNull(criteriaQuery)).getResultList());
     }
 
     /**
@@ -49,8 +49,8 @@ public interface HibernateRepository extends JpaRepository, GenericRepository {
      * @param <T> entity type
      * @return updated managed Entity
      */
-    @SuppressWarnings("unchecked")
-    default <T> T mergeStateWithDbEntity(T newStatefulEntityWithPrimaryKey) {
+    @SuppressWarnings({"unchecked"})
+    default <T> T mergeStateWithDbEntity(final T newStatefulEntityWithPrimaryKey) {
         return (T) getSession().merge(newStatefulEntityWithPrimaryKey);
     }
 
@@ -65,7 +65,7 @@ public interface HibernateRepository extends JpaRepository, GenericRepository {
      * @param id Primary Key
      * @return Optional.of(Managed_instance)
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     default <T> Optional<T> getOptionalById(final Serializable id) {
         return (Optional<T>) getSession().byId(getClazz()).loadOptional(Objects.requireNonNull(id));
         // Optional.of(getSession().get(getClazz(),Objects.requireNonNull(id)));

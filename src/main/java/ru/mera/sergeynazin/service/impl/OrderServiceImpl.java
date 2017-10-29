@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
         return repository.getById(id);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public List<Order> getAll() {
         CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();

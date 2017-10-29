@@ -34,7 +34,7 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         return repository.getById(id);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public List<Shaurma> getAll() {
         CriteriaQuery<Shaurma>  criteriaQuery = repository.myCriteriaQuery();

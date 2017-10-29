@@ -93,8 +93,8 @@ public class IngredientController {
     }
 
     /**
-     * Just testing method
-     * @param name name
+     * Helper methods
+     * @param name/id identifier
      */
     // FIXME: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowByName(final String name) {
@@ -105,10 +105,6 @@ public class IngredientController {
         }
     }
 
-    /**
-     * Just testing method
-     * @param id id
-     */
     private void checkOrThrowById(final Long id) {
         try {
             ingredientService.optionalIsExist(id).orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));

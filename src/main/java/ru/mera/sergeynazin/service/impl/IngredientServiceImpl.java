@@ -27,7 +27,7 @@ public class IngredientServiceImpl implements IngredientService {
         repository.create(transientEntity);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public List<Ingredient> getAll() {
         final CriteriaQuery<Ingredient> criteriaQuery = repository.myCriteriaQuery();
