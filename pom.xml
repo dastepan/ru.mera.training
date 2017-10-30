@@ -71,14 +71,20 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>8.5.20</version>
+        </dependency>
 
 
     </dependencies>
 
     <build>
         <plugins>
+            <!-- jetty server plugin
             <plugin>
-                <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
+                 https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.3.21.v20170918</version>
@@ -92,6 +98,7 @@
                     </webApp>
                 </configuration>
             </plugin>
+             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
