@@ -5,7 +5,7 @@ import ru.mera.training.shawerma.objects.interfaces.Describable;
 public class Ingredient implements Describable {
     private int id;
     private String name;
-    private int cost;
+    private Integer cost;
 
     public Ingredient() {
     }
@@ -17,7 +17,7 @@ public class Ingredient implements Describable {
     }
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -35,11 +35,11 @@ public class Ingredient implements Describable {
     }
 
     @Override
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 }

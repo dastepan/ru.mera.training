@@ -16,7 +16,7 @@ public class Shaurma implements Describable {
     }
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -42,7 +42,7 @@ public class Shaurma implements Describable {
     }
 
     @Override
-    public int getCost() {
+    public Integer getCost() {
         int cost = 0;
 
         for (Ingredient ingredient : ingredientsSet) {

@@ -7,7 +7,7 @@ import java.util.Set;
 public class Menu implements Describable {
     private int id;
     private Set<Shaurma> shaurmaSet;
-    private int price;
+    private Integer price;
 
     public Menu() {
     }
@@ -18,7 +18,7 @@ public class Menu implements Describable {
         this.price = getPrice();
     }
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Menu implements Describable {
     }
 
     @Override
-    public int getCost() {
+    public Integer getCost() {
         return getPrice();
     }
 
@@ -44,11 +44,11 @@ public class Menu implements Describable {
         this.shaurmaSet = shaurmaSet;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         price = 0;
         for (Shaurma shaurma : shaurmaSet) {
             price += shaurma.getCost();

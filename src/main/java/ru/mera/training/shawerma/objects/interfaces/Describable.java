@@ -2,10 +2,10 @@ package ru.mera.training.shawerma.objects.interfaces;
 
 public interface Describable {
 
-    int getId();
+    Integer getId();
 
     String getName();
 
-    int getCost();
+    Integer getCost();
 
 }

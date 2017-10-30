@@ -1,4 +1,4 @@
-package ru.mera.training.shawerma.objects.Users;
+package ru.mera.training.shawerma.model;
 
 public interface SecureLibrary {
 

@@ -5,7 +5,7 @@ import ru.mera.training.shawerma.objects.interfaces.Describable;
 
 public class Order implements Describable {
     private String orderNumber; // дата + число
-    private int totalCost;
+    private Integer totalCost;
 //    private String ordercol;
 
     public Order() {
@@ -24,16 +24,16 @@ public class Order implements Describable {
         this.orderNumber = orderNumber;
     }
 
-    public int getTotalCost() {
+    public Integer getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(Integer totalCost) {
         this.totalCost = totalCost;
     }
 
     @Override
-    public int getId() {
+    public Integer getId() {
         // TODO распарсить строку в число типа int
         return 0;
     }
@@ -44,7 +44,7 @@ public class Order implements Describable {
     }
 
     @Override
-    public int getCost() {
+    public Integer getCost() {
         return totalCost;
     }
 }
