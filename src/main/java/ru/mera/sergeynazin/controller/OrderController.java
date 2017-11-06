@@ -2,7 +2,12 @@ package ru.mera.sergeynazin.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.mera.sergeynazin.controller.advice.Admin;
+import ru.mera.sergeynazin.controller.advice.NotFoundException;
 import ru.mera.sergeynazin.model.Order;
 import ru.mera.sergeynazin.model.Shaurma;
 import ru.mera.sergeynazin.service.OrderService;
@@ -10,7 +15,9 @@ import ru.mera.sergeynazin.service.ShaurmaService;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
+@EnableAsync
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -31,15 +38,18 @@ public class OrderController {
         this.shaurmaService = shaurmaService;
     }
 
-
+    @Admin
+    @Async
     @GetMapping(value = "/{orderNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getOrderInfoByOrderNumberInJSON(@PathVariable("orderNumber") final String orderNumber) {
-        return get(orderNumber);
+    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInJSON(@PathVariable("orderNumber") final String orderNumber) {
+        return CompletableFuture.completedFuture(get(orderNumber));
     }
 
+    @Admin
+    @Async
     @GetMapping(value = "/{orderNumber}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<?> getOrderInfoByOrderNumberInXML(@PathVariable("orderNumber") final String orderNumber) {
-        return get(orderNumber);
+    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInXML(@PathVariable("orderNumber") final String orderNumber) {
+        return CompletableFuture.completedFuture(get(orderNumber));
     }
 
     /**
@@ -48,44 +58,49 @@ public class OrderController {
      * @param orderNumber orderNumber from session
      * @return 200 or 404 (don't know how to send 410)
      */
-    private ResponseEntity<?> get(final String orderNumber) {
+    private ResponseEntity<?> get(final String orderNumber) throws NotFoundException {
         return orderService.optionalIsExist(orderNumber)
             .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+            .orElseThrow(() -> NotFoundException.throwNew(orderNumber));
     }
 
-    // TODO: Aspect
+    @Admin
+    @Async
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Order>> getAllOrdersInJSON() {
-        return ResponseEntity.ok(orderService.getAll());
+    public CompletableFuture<ResponseEntity<Collection<Order>>> getAllOrdersInJSON() {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(orderService.getAll()));
     }
 
-    // TODO: 10/20/17 XML
-    // TODO: Aspect
+
+    @Admin
+    @Async
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Collection<Order>> getAllOrdersInXML() {
-        return ResponseEntity.ok(orderService.getAll());
+    public CompletableFuture<ResponseEntity<Collection<Order>>> getAllOrdersInXML() {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(orderService.getAll()));
     }
 
-    // TODO: Is that value = "/" we need here?
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<?> createNewOrder(@RequestBody final Order order) {
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE})
+    public CompletableFuture<ResponseEntity<?>> createNewOrder(@RequestBody final Order order) {
         orderService.save(order);
-        return ResponseEntity.created(URI.create("/" + order.getOrderNumber())).body(order);
+        final URI created = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{orderNumber}")
+            .buildAndExpand(order.getOrderNumber()).toUri();
+        return CompletableFuture.completedFuture(ResponseEntity.created(created).body(order));
     }
 
-    // TODO: Produces!!
-    // TODO: 10/20/17 Aspect
+    @Async
     @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateOrderInJson(@PathVariable(value = "orderid") Long orderId,
-                                               @PathVariable(value = "shaurmaid") Long shaurmaId) {
-        return updateOrCreateOrder(orderId, shaurmaId);
+    public CompletableFuture<ResponseEntity<?>> updateOrderInJSON(@PathVariable("orderid") final Long orderId,
+                                                                  @PathVariable("shaurmaid") final Long shaurmaId) {
+        return CompletableFuture.completedFuture(updateOrCreateOrder(orderId, shaurmaId));
     }
-    // TODO: 10/20/17 Aspect
+
+    @Async
     @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<?> updateOrderInXML(@PathVariable(value = "orderid") Long orderId,
-                                              @PathVariable(value = "shaurmaid") Long shaurmaId) {
-        return updateOrCreateOrder(orderId, shaurmaId);
+    public CompletableFuture<ResponseEntity<?>> updateOrderInXML(@PathVariable("orderid") final Long orderId,
+                                                                 @PathVariable("shaurmaid") final Long shaurmaId) {
+        return CompletableFuture.completedFuture(updateOrCreateOrder(orderId, shaurmaId));
     }
 
     /**
@@ -95,7 +110,7 @@ public class OrderController {
      * @return 200 or 201
      */
     //TODO Migrate to session bean instead of new
-    private ResponseEntity<?> updateOrCreateOrder(Long orderId, Long shaurmaId) {
+    private ResponseEntity<?> updateOrCreateOrder(final Long orderId, final Long shaurmaId) throws NotFoundException {
         return shaurmaService.optionalIsExist(shaurmaId)
             .map(shaurma -> {
                  final Order newOrder = orderService.optionalIsExist(orderId)
@@ -109,66 +124,52 @@ public class OrderController {
                         return currentOrder;
                     });
                 return ResponseEntity.created(URI.create(newOrder.getOrderNumber())).body(newOrder);
-            }).orElse(ResponseEntity.notFound().build());
+            }).orElseThrow(() -> NotFoundException.throwNew(shaurmaId));
     }
 
+    @Admin
+    @Async
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CompletableFuture<ResponseEntity<?>> deleteOrderInJSON(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(delete(id));
+    }
+
+    @Admin
+    @Async
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public CompletableFuture<ResponseEntity<?>> deleteOrderInXML(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(delete(id));
+    }
 
     /**
      * NOT NECESSARY METHOD As if the order is not supposed to be deleted???
      * @param id order id from db
      * @return 200 or 404
      */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteOrderInJson(@PathVariable("id") final Long id) {
-        return delete(id);
-    }
-
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<?> deleteOrderInXML(@PathVariable("id") final Long id) {
-        return delete(id);
-    }
-
-    // TODO: 10/20/17 Aspect
-    private ResponseEntity<?> delete(final Long id) {
+    private ResponseEntity<?> delete(final Long id) throws NotFoundException {
         return orderService.optionalIsExist(id)
             .map(order -> {
                 orderService.delete(order);
                 return ResponseEntity.ok(order);
-            }).orElse(ResponseEntity.notFound().build());
+            }).orElseThrow(() -> NotFoundException.throwNew(id));
     }
-
 
     /**
      * Helper methods
      * @param id/orderNumber identifier
      */
-    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ??? (...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowShaurma(final Long id) {
-        try {
             shaurmaService.optionalIsExist(id)
-                .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
-        } catch (NotFoundExeption notFoundExeption) {
-            notFoundExeption.printStackTrace();
-        }
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
     }
 
-    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowOrderById(final Long id) {
-        try {
             orderService.optionalIsExist(id)
-                .orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
-        } catch (NotFoundExeption notFoundExeption) {
-            notFoundExeption.printStackTrace();
-        }
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
     }
 
-    // TODO: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowOrderByName(final String orderNumber) {
-        try {
             orderService.optionalIsExist(orderNumber)
-                .orElseThrow(() -> new NotFoundExeption(orderNumber));
-        } catch (NotFoundExeption notFoundExeption) {
-            notFoundExeption.printStackTrace();
-        }
+                .orElseThrow(() -> new NotFoundException(orderNumber));
     }
 }

@@ -29,9 +29,9 @@ public interface JpaRepository {
 
 
     // read
-    <T> T getById(Serializable primaryKey);
+    <T> T getById(Serializable id);
 
-    <T> Optional<T> getOptionalById(Serializable primaryKey);
+    <T> Optional<T> getOptionalById(Serializable id);
 
     <T> T getUniqueByCriteriaQuery(CriteriaQuery<T> criteriaQuery);
 

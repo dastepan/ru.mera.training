@@ -1,7 +1,6 @@
 package ru.mera.sergeynazin.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mera.sergeynazin.model.Order;
 import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.OrderService;
@@ -12,12 +11,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class OrderServiceImpl implements OrderService {
-
-    /**
-     * Test
-     */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JpaRepository repository;
 
@@ -25,6 +20,7 @@ public class OrderServiceImpl implements OrderService {
         this.repository = repository;
     }
 
+    @Transactional
     @Override
     public void save(final Order transientEntity) {
         repository.create(transientEntity);
@@ -38,18 +34,19 @@ public class OrderServiceImpl implements OrderService {
     @SuppressWarnings({"unchecked"})
     @Override
     public List<Order> getAll() {
-        CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();
-        Root<Order> root = criteriaQuery.from(Order.class);
+        final CriteriaQuery<Order> criteriaQuery = repository.myCriteriaQuery();
+        final Root<Order> root = criteriaQuery.from(Order.class);
         criteriaQuery.select(root);
         return repository.getByCriteriaQuery(criteriaQuery);
     }
 
-
+    @Transactional
     @Override
     public void update(final Order detachedEntity) {
         repository.update(detachedEntity);
     }
 
+    @Transactional
     @Override
     public void delete(final Order persistentOrDetachedEntity) {
         repository.delete(persistentOrDetachedEntity);

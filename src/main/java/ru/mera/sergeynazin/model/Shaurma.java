@@ -82,8 +82,7 @@ public class Shaurma {
         Shaurma shaurma = (Shaurma) o;
 
         return Objects.equals(this.name, shaurma.name)
-            && Objects.equals(this.id, shaurma.id)
-            && Objects.equals(this.ingredientSet, shaurma.ingredientSet);
+            && Objects.equals(this.id, shaurma.id);
     }
 
     /**
@@ -96,7 +95,6 @@ public class Shaurma {
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (ingredientSet != null ? ingredientSet.hashCode() : 0);
         return result;
     }
 }

@@ -2,18 +2,24 @@ package ru.mera.sergeynazin.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.mera.sergeynazin.controller.advice.Admin;
+import ru.mera.sergeynazin.controller.advice.NotFoundException;
 import ru.mera.sergeynazin.model.Ingredient;
 import ru.mera.sergeynazin.service.IngredientService;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
+@EnableAsync
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientController {
 
-    // TODO: Inject
     private IngredientService ingredientService;
 
     public void setIngredientService(IngredientService ingredientService) {
@@ -30,86 +36,92 @@ public class IngredientController {
      * that describes the status of the request while referring
      * to the new resource(s)
      */
-    // TODO: 10/20/17 Aspect
-    @PostMapping(value = "/ingredients/create/{ingredient_name}", consumes = { MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE })
-    public ResponseEntity<?> createNewIngredient(@PathVariable("ingredient_name") final String ingredientName, @RequestBody final Ingredient ingredient) {
-        return ingredientService.optionalIsExist(ingredient.getId())
-            .flatMap(i -> ingredientService.optionalIsExist(ingredientName))
+    @Admin
+    @Async
+    @PostMapping(value = "/create/{ingredient_name}", consumes = { MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE })
+    public CompletableFuture<ResponseEntity<?>> createNewIngredient(@PathVariable("ingredient_name") final String ingredientName,
+                                                                    @RequestBody final Ingredient ingredient) {
+        if (ingredient.getId() != null)
+            return CompletableFuture.completedFuture(ResponseEntity.unprocessableEntity().body(ingredient));
+        return CompletableFuture.completedFuture(
+            ingredientService.optionalIsExist(ingredientName)
             .map(i -> ResponseEntity.unprocessableEntity().body(ingredient))
             .orElseGet(() -> {
                 ingredient.setName(ingredientName);
                 ingredientService.save(ingredient);
-                //final Ingredient i = ingredientService.addEntityWithName(ingredientName, ingredient);
-                return ResponseEntity.created(URI.create("/"+ ingredient.getId())).body(ingredient);
-            });
+                final URI created = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .replacePath("/{id}")
+                    .buildAndExpand(ingredient.getId()).toUri();
+                return ResponseEntity.created(created).body(ingredient);
+            }));
     }
 
-    // FIXME:// FIXME:// FIXME:// FIXME:// FIXME:// FIXME:
-    // FIXME:
-    // FIXME:   Ничего не понятно с методами ниже. Нужны разъясниея
-    // FIXME:
-    // FIXME:// FIXME:// FIXME:// FIXME:// FIXME:// FIXME:
-
-    @PostMapping(value = "/ingredients/add/{ingredient_name}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> addIngredientToShaurma(@PathVariable("ingredient_name") final String ingredientName, @RequestBody final Ingredient ingredientWithPrimaryKey) {
-
-        return ingredientService.optionalIsExist(ingredientName)
-            .map() //FIXME: НЕПОНЯТНО!
-            .orElseGet(() -> {
-                ingredientService
-                return ResponseEntity.noContent().build();
-            });
+    @Async
+    @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public CompletableFuture<ResponseEntity<?>> getIngredientByIdInJSON(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(get(id));
     }
 
+
+    @Async
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public CompletableFuture<ResponseEntity<?>> getIngredientByIdInXML(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(get(id));
+    }
+
+    private ResponseEntity<?> get(final Long id) throws NotFoundException {
+        return ingredientService.optionalIsExist(id)
+            .map(ResponseEntity::ok)
+            .orElseThrow(() -> NotFoundException.throwNew(id));
+    }
+
+    @Async
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Ingredient>> getAllIngredientsInJSON() {
-        return ResponseEntity.ok(ingredientService.getAll());
+    public CompletableFuture<ResponseEntity<Collection<Ingredient>>> getAllIngredientsInJSON() {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(ingredientService.getAll()));
     }
 
-    // TODO: 10/20/17 XML
+
+    @Async
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Collection<Ingredient>> getAllIngredientsInXML() {
-        return ResponseEntity.ok(ingredientService.getAll());
+    public CompletableFuture<ResponseEntity<Collection<Ingredient>>> getAllIngredientsInXML() {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(ingredientService.getAll()));
     }
 
-    // TODO: 10/20/17 Aspect
-    @DeleteMapping(value = "/ingredients/remove/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> deleteIngredientInJSON(@PathVariable("id") final Long id) {
-        return delete(id);
+    @Admin
+    @Async
+    @DeleteMapping(value = "/remove/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+    public CompletableFuture<ResponseEntity<?>> deleteIngredientInJSON(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(delete(id));
     }
 
-    // TODO: 10/20/17 Aspect
-    @DeleteMapping(value = "/ingredients/remove/{id}", consumes = { MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE })
-    public ResponseEntity<?> deleteIngredientInXML(@PathVariable("id") final Long id) {
-        return delete(id);
+    @Admin
+    @Async
+    @DeleteMapping(value = "/remove/{id}", consumes = { MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE })
+    public CompletableFuture<ResponseEntity<?>> deleteIngredientInXML(@PathVariable("id") final Long id) {
+        return CompletableFuture.completedFuture(delete(id));
     }
 
-    private ResponseEntity<?> delete(final Long id) {
+    private ResponseEntity<?> delete(final Long id) throws NotFoundException {
         return ingredientService.optionalIsExist(id)
             .map(ingredient -> {
                 ingredientService.delete(ingredient);
                 return ResponseEntity.ok(ingredient);
-            }).orElse(ResponseEntity.notFound().build());
+            }).orElseThrow(() -> NotFoundException.throwNew(id));
     }
 
     /**
      * Helper methods
      * @param name/id identifier
      */
-    // FIXME: 10/23/17 WHY "THE RESULT OF orElseThrough() is IGNORED" ???(...- No Handler ?? )witch to security with (also there is Principal)
     private void checkOrThrowByName(final String name) {
-        try {
-            ingredientService.optionalIsExist(name).orElseThrow(() -> new NotFoundExeption(name));
-        } catch (NotFoundExeption notFoundExeption) {
-            notFoundExeption.printStackTrace();
-        }
+            ingredientService.optionalIsExist(name)
+                .orElseThrow(() -> new NotFoundException(name));
     }
 
     private void checkOrThrowById(final Long id) {
-        try {
-            ingredientService.optionalIsExist(id).orElseThrow(() -> new NotFoundExeption(String.valueOf(id)));
-        } catch (NotFoundExeption notFoundExeption) {
-            notFoundExeption.printStackTrace();
-        }
+            ingredientService.optionalIsExist(id)
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
     }
 }

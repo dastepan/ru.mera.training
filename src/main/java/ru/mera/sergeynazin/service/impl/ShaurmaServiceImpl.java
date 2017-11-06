@@ -1,7 +1,6 @@
 package ru.mera.sergeynazin.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mera.sergeynazin.model.Shaurma;
 import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.ShaurmaService;
@@ -11,12 +10,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class ShaurmaServiceImpl implements ShaurmaService {
-
-    /**
-     * Test
-     */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JpaRepository repository;
 
@@ -24,6 +19,7 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         this.repository = repository;
     }
 
+    @Transactional
     @Override
     public void save(final Shaurma transientEntity) {
         repository.create(transientEntity);
@@ -37,18 +33,19 @@ public class ShaurmaServiceImpl implements ShaurmaService {
     @SuppressWarnings({"unchecked"})
     @Override
     public List<Shaurma> getAll() {
-        CriteriaQuery<Shaurma>  criteriaQuery = repository.myCriteriaQuery();
-        Root<Shaurma> root = criteriaQuery.from(Shaurma.class);
+        final CriteriaQuery<Shaurma>  criteriaQuery = repository.myCriteriaQuery();
+        final Root<Shaurma> root = criteriaQuery.from(Shaurma.class);
         criteriaQuery.select(root);
         return repository.getByCriteriaQuery(criteriaQuery);
     }
 
-
+    @Transactional
     @Override
     public void update(final Shaurma detachedEntity) {
         repository.update(detachedEntity);
     }
 
+    @Transactional
     @Override
     public void delete(final Shaurma persistentOrDetachedEntity) {
         repository.delete(persistentOrDetachedEntity);

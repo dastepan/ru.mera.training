@@ -2,14 +2,17 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 	    http://www.springframework.org/schema/context
-	    http://www.springframework.org/schema/context/spring-context.xsd" >
+	    http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <!-- Spring MVC annotations(@RestController etc.) -->
     <context:component-scan base-package="ru.mera.sergeynazin.controller"/>
+
+    <!--@Async-->
+    <task:annotation-driven />
 
     <bean id="ingredientController" class="ru.mera.sergeynazin.controller.IngredientController">
         <property name="ingredientService" ref="ingredientServiceImpl" />
@@ -34,13 +37,7 @@
 
     <bean id="sessionOrder" class="ru.mera.sergeynazin.model.Order" scope="session" >
         <property name="shaurmaSet" >
-            <set>
-                <bean class="ru.mera.sergeynazin.model.Shaurma" >
-                    <property name="id"><null/></property>
-                    <property name="name"><null/></property>
-                    <property name="ingredientSet"><null/></property>
-                </bean>
-            </set>
+            <set value-type="ru.mera.sergeynazin.model.Shaurma"/>
         </property>
     </bean>
 

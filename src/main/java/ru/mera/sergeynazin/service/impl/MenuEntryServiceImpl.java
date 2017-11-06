@@ -1,7 +1,6 @@
 package ru.mera.sergeynazin.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mera.sergeynazin.model.MenuEntry;
 import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.MenuEntryService;
@@ -15,9 +14,8 @@ import java.util.Optional;
  * Only for shaurmamaker
  */
 
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class MenuEntryServiceImpl implements MenuEntryService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JpaRepository repository;
 
@@ -25,6 +23,7 @@ public class MenuEntryServiceImpl implements MenuEntryService {
         this.repository = repository;
     }
 
+    @Transactional
     @Override
     public void save(final MenuEntry transientEntity) {
         repository.create(transientEntity);
@@ -38,17 +37,19 @@ public class MenuEntryServiceImpl implements MenuEntryService {
     @SuppressWarnings({"unchecked"})
     @Override
     public List<MenuEntry> getAll() {
-        CriteriaQuery<MenuEntry>  criteriaQuery = repository.myCriteriaQuery();
-        Root<MenuEntry> root = criteriaQuery.from(MenuEntry.class);
+        final CriteriaQuery<MenuEntry>  criteriaQuery = repository.myCriteriaQuery();
+        final Root<MenuEntry> root = criteriaQuery.from(MenuEntry.class);
         criteriaQuery.select(root);
         return repository.getByCriteriaQuery(criteriaQuery);
     }
 
+    @Transactional
     @Override
     public void update(final MenuEntry detachedEntity) {
         repository.update(detachedEntity);
     }
 
+    @Transactional
     @Override
     public void delete(final MenuEntry persistentOrDetachedEntity) {
         repository.delete(persistentOrDetachedEntity);

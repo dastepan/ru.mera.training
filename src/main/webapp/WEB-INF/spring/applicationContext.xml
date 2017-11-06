@@ -7,19 +7,17 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd" >
+
     <!--
-    FIXME: Delete !
+    TODO: Delete or switch to annotations!
     Turn annotations on (@Annotation-based configuration)
     <context:annotation-config/>
     <context:component-scan base-package="ru.mera.sergeynazin"/>
     Looking for these paths for the beans (@Component, @Service)
     <context:component-scan base-package="ru.mera.sergeynazin.service"/>
     <context:component-scan base-package="ru.mera.sergeynazin.repository"/>
-
     -->
 
     <import resource="data.xml"/>
-
-
 
 </beans>

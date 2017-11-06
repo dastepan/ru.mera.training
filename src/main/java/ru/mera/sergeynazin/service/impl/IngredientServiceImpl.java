@@ -1,7 +1,6 @@
 package ru.mera.sergeynazin.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mera.sergeynazin.model.Ingredient;
 import ru.mera.sergeynazin.repository.JpaRepository;
 import ru.mera.sergeynazin.service.IngredientService;
@@ -12,9 +11,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional(readOnly = true, noRollbackFor = Exception.class)
 public class IngredientServiceImpl implements IngredientService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JpaRepository repository;
 
@@ -22,6 +20,7 @@ public class IngredientServiceImpl implements IngredientService {
         this.repository = repository;
     }
 
+    @Transactional
     @Override
     public void save(final Ingredient transientEntity) {
         repository.create(transientEntity);
@@ -36,11 +35,13 @@ public class IngredientServiceImpl implements IngredientService {
         return repository.getByCriteriaQuery(criteriaQuery);
     }
 
+    @Transactional
     @Override
     public void update(final Ingredient detachedEntity) {
         repository.update(detachedEntity);
     }
 
+    @Transactional
     @Override
     public void delete(final Ingredient persistentOrDetachedEntity) {
         repository.delete(persistentOrDetachedEntity);

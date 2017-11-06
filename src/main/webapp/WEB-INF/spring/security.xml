@@ -1,34 +1,39 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns:aop="http://www.springframework.org/schema/aop"
              xsi:schemaLocation="
                 http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans.xsd
 	            http://www.springframework.org/schema/security
-	            http://www.springframework.org/schema/security/spring-security.xsd" >
+	            http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/panel**" access="hasRole('ROLE_ADMIN')" />
-        <access-denied-handler error-page="/403" />
-        <form-login
-            login-page="/login"
-            default-target-url="/panel"
-            authentication-failure-url="/login?error"
-            username-parameter="user_username"
-            password-parameter="user_password" />
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <beans:bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver" />
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
 
-        <logout logout-success-url="/login?logout" />
-        <!-- Активация csfr защиты -->
-        <csrf/>
-    </http>
 
-    <authentication-manager>
-        <authentication-provider>
-            <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query=
-                                       "SELECT username, password, enabled FROM user WHERE username =? "
-                               authorities-by-username-query=
-                                       "SELECT username, role FROM user_roles WHERE username =? " />
-        </authentication-provider>
-    </authentication-manager>
+    <aop:config>
+        <aop:aspect id = "securityAspect" ref = "securityManager">
+
+            <aop:pointcut id = "check"
+                          expression = "execution(public * ru.mera.sergeynazin.controller.*Controller.*(..))
+                            &amp;&amp; args(java.security.Principal, ..)
+                            &amp;&amp; @target(ru.mera.sergeynazin.controller.advice.Admin)" />
+
+            <aop:before arg-names="principal"
+                        pointcut-ref = "check"
+                        method = "checkPermissions"/>
+            <!--
+            <aop:after-throwing pointcut-ref = "check"
+                                throwing = "ex"
+                                method = "notEnoughPermissions"/>-->
+        </aop:aspect>
+    </aop:config>
+
+    <beans:bean id="securityManager" class="ru.mera.sergeynazin.controller.advice.CheckPermissions" />
+
 </beans:beans>

@@ -25,12 +25,8 @@
         <beans:property name="suffix" value=".jsp"/>
     </beans:bean>
 
-    <!-- TODO: Security  -->
     <!-- Файл с настройками Security -->
-    <!--<beans:import resource="security.xml"/>-->
-
-    <!-- Localization -->
-    <beans:import resource="local.xml"/>
+    <beans:import resource="security.xml"/>
 
     <!-- controllers -->
     <beans:import resource="controllers.xml"/>
