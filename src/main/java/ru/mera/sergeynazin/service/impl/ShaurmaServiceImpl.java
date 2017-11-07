@@ -45,6 +45,11 @@ public class ShaurmaServiceImpl implements ShaurmaService {
         repository.update(detachedEntity);
     }
 
+    @Override
+    public Shaurma merge(Shaurma detachedEntity) {
+        return repository.mergeStateWithDbEntity(detachedEntity);
+    }
+
     @Transactional
     @Override
     public void delete(final Shaurma persistentOrDetachedEntity) {

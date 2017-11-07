@@ -28,6 +28,8 @@
     </bean>
     <bean id="shaurmaController" class="ru.mera.sergeynazin.controller.ShaurmaController">
         <property name="shaurmaService" ref="shaurmaServiceImpl" />
+        <property name="ingredientService" ref="ingredientServiceImpl" />
+        <property name="currentOrder" ref="sessionOrder" />
     </bean>
 
     <bean id="ingredientServiceImpl" class="ru.mera.sergeynazin.service.impl.IngredientServiceImpl" />

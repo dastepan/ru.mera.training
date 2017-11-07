@@ -19,6 +19,7 @@ public interface ShaurmaService {
     List<Shaurma> getAll();
     Shaurma loadAsPersistent(Long id);
     void update(Shaurma detachedEntity);
+    Shaurma merge(Shaurma detachedEntity);
     void delete(Shaurma persistentOrDetachedEntity);
     Optional<Shaurma> optionalIsExist(Long id);
 }

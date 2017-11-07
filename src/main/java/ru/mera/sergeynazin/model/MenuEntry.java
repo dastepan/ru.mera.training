@@ -22,7 +22,7 @@ public class MenuEntry {
     @Column(precision = 7, scale = 2, nullable = false)
     private Double price;
 
-    // TODO: 10/23/17 Do I need it empty constructor?
+
     public MenuEntry() {
     }
 

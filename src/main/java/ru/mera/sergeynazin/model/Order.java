@@ -24,6 +24,7 @@ public class Order {
     @NaturalId
     @Generated(GenerationTime.INSERT)
     @Column(        // TODO: Insertable seems to be redundant
+        name = "order_number",
         length = 32,
         unique = true,
         nullable = false,
@@ -43,12 +44,12 @@ public class Order {
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
         name = "order_has_shaurma",
-        joinColumns = { @JoinColumn(name = "order_orderNumber", referencedColumnName = "id") },
+        joinColumns = { @JoinColumn(name = "order_order_number", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "shaurma_id", referencedColumnName = "id") }
     )
     private Set<Shaurma> shaurmaSet;
 
-    // TODO: 10/23/17 Do I need it empty constructor?
+
     public Order() {
     }
 

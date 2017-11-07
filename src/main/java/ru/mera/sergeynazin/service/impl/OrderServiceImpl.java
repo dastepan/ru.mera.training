@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         final CriteriaBuilder criteriaBuilder = repository.myCriteriaBuilder();
         final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         final Root<Order> ingredientRoot = criteriaQuery.from(Order.class);
-        criteriaQuery.select(ingredientRoot).where(criteriaBuilder.equal(ingredientRoot.get("orderNumber"), orderNumber));
+        criteriaQuery.select(ingredientRoot).where(criteriaBuilder.equal(ingredientRoot.get("order_number"), orderNumber));
 
         return Optional.of(repository.getUniqueByCriteriaQuery(criteriaQuery));
     }

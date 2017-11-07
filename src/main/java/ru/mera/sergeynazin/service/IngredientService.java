@@ -19,6 +19,7 @@ public interface IngredientService {
     void save(Ingredient transientEntity);
     List<Ingredient> getAll();
     void update(Ingredient detachedEntity);
+    Ingredient merge(Ingredient detachedEntity);
     void delete(Ingredient persistentOrDetachedEntity);
     Optional<Ingredient> optionalIsExist(String name);
     Optional<Ingredient> optionalIsExist(Long id);

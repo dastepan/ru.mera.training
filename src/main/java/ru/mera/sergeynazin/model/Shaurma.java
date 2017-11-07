@@ -28,7 +28,22 @@ public class Shaurma {
     )
     private Set<Ingredient> ingredientSet;
 
-    // TODO: 10/23/17 Do I need it empty constructor?
+    @org.hibernate.annotations.Type(type = "big_decimal")
+    @Column(name = "cost", precision = 7, scale = 2)
+    public Double getCost() {
+        DoubleAdder doubleAdder = new DoubleAdder();
+
+        //TODO ifNeeded to avoid unboxing + boxing as listed below
+//        ingredientSet.parallelStream()
+//                .forEach(ingredient -> doubleAdder.add(ingredient.getCost()));
+//        return doubleAdder.doubleValue();
+
+        ingredientSet.parallelStream()
+            .mapToDouble(Ingredient::getCost)
+            .forEach(doubleAdder::add);
+        return doubleAdder.doubleValue();
+    }
+
     public Shaurma() {
     }
 
@@ -56,19 +71,7 @@ public class Shaurma {
         this.ingredientSet = ingredientSet;
     }
 
-    public Double getCost() {
-        DoubleAdder doubleAdder = new DoubleAdder();
 
-        //TODO ifNeeded to avoid unboxing + boxing as listed below
-//        ingredientSet.parallelStream()
-//                .forEach(ingredient -> doubleAdder.add(ingredient.getCost()));
-//        return doubleAdder.doubleValue();
-
-        ingredientSet.parallelStream()
-                .mapToDouble(Ingredient::getCost)
-                .forEach(doubleAdder::add);
-        return doubleAdder.doubleValue();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -82,19 +85,12 @@ public class Shaurma {
         Shaurma shaurma = (Shaurma) o;
 
         return Objects.equals(this.name, shaurma.name)
-            && Objects.equals(this.id, shaurma.id);
+            && Objects.equals(this.id, shaurma.id)
+            && Objects.equals(this.ingredientSet, shaurma.ingredientSet);
     }
 
-    /**
-     * For educational purposes this is done the old-school way
-     * rather than could be performed in just one of code
-     * btw, this is what pretty much {@link Objects#hash(Object...)} is doing...
-     * @see Ingredient#hashCode()
-     */
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+        return Objects.hash(this.name, this.id, this.ingredientSet);
     }
 }

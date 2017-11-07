@@ -10,6 +10,7 @@ import ru.mera.sergeynazin.controller.advice.Admin;
 import ru.mera.sergeynazin.controller.advice.NotFoundException;
 import ru.mera.sergeynazin.model.Order;
 import ru.mera.sergeynazin.model.Shaurma;
+import ru.mera.sergeynazin.service.IngredientService;
 import ru.mera.sergeynazin.service.OrderService;
 import ru.mera.sergeynazin.service.ShaurmaService;
 
@@ -26,10 +27,15 @@ public class OrderController {
 
     private ShaurmaService shaurmaService;
 
+    private IngredientService ingredientService;
+
     private Order currentOrder;
 
     public void setCurrentOrder(Order currentOrder) {
         this.currentOrder = currentOrder;
+    }
+    public void setIngredientService(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
     }
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
@@ -37,18 +43,18 @@ public class OrderController {
     public void setShaurmaService(ShaurmaService shaurmaService) {
         this.shaurmaService = shaurmaService;
     }
-
+    // BEGIN_INCLUDE(IngredientController.@Admin)
     @Admin
     @Async
-    @GetMapping(value = "/{orderNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInJSON(@PathVariable("orderNumber") final String orderNumber) {
+    @GetMapping(value = "/{order_number}", produces = { MediaType.APPLICATION_JSON_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInJSON(@PathVariable("order_number") final String orderNumber) {
         return CompletableFuture.completedFuture(get(orderNumber));
     }
 
     @Admin
     @Async
-    @GetMapping(value = "/{orderNumber}", produces = MediaType.APPLICATION_XML_VALUE)
-    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInXML(@PathVariable("orderNumber") final String orderNumber) {
+    @GetMapping(value = "/{order_number}", produces = { MediaType.APPLICATION_XML_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> getOrderInfoByOrderNumberInXML(@PathVariable("order_number") final String orderNumber) {
         return CompletableFuture.completedFuture(get(orderNumber));
     }
 
@@ -66,77 +72,28 @@ public class OrderController {
 
     @Admin
     @Async
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE } )
     public CompletableFuture<ResponseEntity<Collection<Order>>> getAllOrdersInJSON() {
         return CompletableFuture.completedFuture(ResponseEntity.ok(orderService.getAll()));
     }
 
-
     @Admin
     @Async
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/all", produces = { MediaType.APPLICATION_XML_VALUE } )
     public CompletableFuture<ResponseEntity<Collection<Order>>> getAllOrdersInXML() {
         return CompletableFuture.completedFuture(ResponseEntity.ok(orderService.getAll()));
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE})
-    public CompletableFuture<ResponseEntity<?>> createNewOrder(@RequestBody final Order order) {
-        orderService.save(order);
-        final URI created = ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{orderNumber}")
-            .buildAndExpand(order.getOrderNumber()).toUri();
-        return CompletableFuture.completedFuture(ResponseEntity.created(created).body(order));
-    }
-
-    @Async
-    @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<ResponseEntity<?>> updateOrderInJSON(@PathVariable("orderid") final Long orderId,
-                                                                  @PathVariable("shaurmaid") final Long shaurmaId) {
-        return CompletableFuture.completedFuture(updateOrCreateOrder(orderId, shaurmaId));
-    }
-
-    @Async
-    @PutMapping(value = "/order/{orderid}/add/{shaurmaid}", produces = MediaType.APPLICATION_XML_VALUE)
-    public CompletableFuture<ResponseEntity<?>> updateOrderInXML(@PathVariable("orderid") final Long orderId,
-                                                                 @PathVariable("shaurmaid") final Long shaurmaId) {
-        return CompletableFuture.completedFuture(updateOrCreateOrder(orderId, shaurmaId));
-    }
-
-    /**
-     * updates or creates the Order with the given ID.
-     * @param orderId {@link Order#getOrderNumber()}
-     * @param shaurmaId {@link Shaurma#getId()}
-     * @return 200 or 201
-     */
-    //TODO Migrate to session bean instead of new
-    private ResponseEntity<?> updateOrCreateOrder(final Long orderId, final Long shaurmaId) throws NotFoundException {
-        return shaurmaService.optionalIsExist(shaurmaId)
-            .map(shaurma -> {
-                 final Order newOrder = orderService.optionalIsExist(orderId)
-                    .map(order -> {
-                        order.getShaurmaSet().add(shaurma);
-                        return order;
-                    }).orElseGet(() -> {
-                         // @see controllers.xml -> switched to null value shaurma set
-                         currentOrder.getShaurmaSet().add(shaurma);
-                         orderService.save(currentOrder);
-                        return currentOrder;
-                    });
-                return ResponseEntity.created(URI.create(newOrder.getOrderNumber())).body(newOrder);
-            }).orElseThrow(() -> NotFoundException.throwNew(shaurmaId));
-    }
-
     @Admin
     @Async
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE } )
     public CompletableFuture<ResponseEntity<?>> deleteOrderInJSON(@PathVariable("id") final Long id) {
         return CompletableFuture.completedFuture(delete(id));
     }
 
     @Admin
     @Async
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    @DeleteMapping(value = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE } )
     public CompletableFuture<ResponseEntity<?>> deleteOrderInXML(@PathVariable("id") final Long id) {
         return CompletableFuture.completedFuture(delete(id));
     }
@@ -152,6 +109,110 @@ public class OrderController {
                 orderService.delete(order);
                 return ResponseEntity.ok(order);
             }).orElseThrow(() -> NotFoundException.throwNew(id));
+    }
+    // END_INCLUDE(IngredientController.@Admin)
+
+
+    /**
+     * Create empty order
+     * @param order body
+     * @return 201 with URI
+     */
+    @Async
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> createNewOrder(@RequestBody final Order order) {
+        orderService.save(order);
+        final URI created = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{order_number}")
+            .buildAndExpand(order.getOrderNumber()).toUri();
+        return CompletableFuture.completedFuture(ResponseEntity.created(created).body(order));
+    }
+
+    @Async
+    @PutMapping(value = "/{order_id}/add/{shaurma_id}", produces = { MediaType.APPLICATION_JSON_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> updateOrderInJSON(@PathVariable("order_id") final Long orderId,
+                                                                  @PathVariable("shaurma_id") final Long shaurmaId) {
+        return CompletableFuture.completedFuture(updateOrCreateOrderFromMenu(orderId, shaurmaId));
+    }
+
+    @Async
+    @PutMapping(value = "/{order_id}/add/{shaurma_id}", produces = { MediaType.APPLICATION_XML_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> updateOrderInXML(@PathVariable("order_id") final Long orderId,
+                                                                 @PathVariable("shaurma_id") final Long shaurmaId) {
+        return CompletableFuture.completedFuture(updateOrCreateOrderFromMenu(orderId, shaurmaId));
+    }
+
+    /**
+     * Updates the Order with predefined shaurma from the menu.
+     * Method is suitable for adding the Order with predefined shaurma.
+     * or for adding MORE to the amount of currently present in the order shaurma
+     * @param orderId {@link Order#getOrderNumber()}
+     * @param shaurmaId {@link Shaurma#getId()}
+     * @return 200 or 201
+     */
+    private ResponseEntity<?> updateOrCreateOrderFromMenu(final Long orderId, final Long shaurmaId) throws NotFoundException {
+        return shaurmaService.optionalIsExist(shaurmaId)
+            .map(shaurma -> {
+                final Order newOrder = orderService.optionalIsExist(orderId)
+                    .map(order -> {
+                        order.getShaurmaSet().add(shaurma);
+                        return order;
+                    }).orElseGet(() -> {
+                        // @see controllers.xml -> switched to null value shaurma set
+                        currentOrder.getShaurmaSet().add(shaurma);
+                        orderService.save(currentOrder);
+                        return currentOrder;
+                    });
+                final URI created = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .replacePath("/{order_number}")
+                    .buildAndExpand(newOrder.getOrderNumber()).toUri();
+                return ResponseEntity.created(created).body(newOrder);
+            }).orElseThrow(() -> NotFoundException.throwNew(shaurmaId));
+    }
+
+    @Async
+    @PutMapping(value = "/{order_id}/add", produces = { MediaType.APPLICATION_JSON_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> updateOrderInJSON(@PathVariable("order_id") final Long orderId,
+                                                                  @RequestBody final Shaurma shaurma) {
+        return CompletableFuture.completedFuture(updateOrCreateOrderFromConstructor(orderId, shaurma));
+    }
+
+    @Async
+    @PutMapping(value = "/{order_id}/add", produces = { MediaType.APPLICATION_XML_VALUE } )
+    public CompletableFuture<ResponseEntity<?>> updateOrderInXML(@PathVariable("order_id") final Long orderId,
+                                                                 @RequestBody final Shaurma shaurma) {
+        return CompletableFuture.completedFuture(updateOrCreateOrderFromConstructor(orderId, shaurma));
+    }
+
+    /**
+     * Method is suitable for adding the Order with custom shaurma,
+     * or for adding MORE to the amount of currently present in the order shaurma
+     * @param orderId {@link Order#getOrderNumber()}
+     * @param shaurma {@link Shaurma} body
+     * @return 200 or 201
+     */
+    private ResponseEntity<?> updateOrCreateOrderFromConstructor(final Long orderId, final Shaurma shaurma) throws NotFoundException {
+        return orderService.optionalIsExist(orderId)
+            .map(order -> {
+                if (shaurma.getIngredientSet()
+                    .parallelStream()
+                    .allMatch(ingredient -> ingredientService.optionalIsExist(ingredient.getId()).isPresent())) {
+                    return ResponseEntity.unprocessableEntity().body(shaurma);
+                }
+                order.getShaurmaSet().add(shaurma);
+                return ResponseEntity.ok(order);
+            }).orElseGet(() -> {
+                // @see controllers.xml -> switched to null value shaurma set
+                currentOrder.getShaurmaSet().add(shaurma);
+                orderService.save(currentOrder);
+                final URI created = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .replacePath("/{order_number}")
+                    .buildAndExpand(currentOrder.getOrderNumber()).toUri();
+                return ResponseEntity.created(created).body(currentOrder);
+            });
     }
 
     /**

@@ -22,7 +22,7 @@ public interface JpaRepository {
 
     // update
     <T> void update(T detachedEntity);
-
+    <T> T mergeStateWithDbEntity(T detachedEntity);
 
     // delete
     <T> void delete(T persistentOrDetachedEntity);

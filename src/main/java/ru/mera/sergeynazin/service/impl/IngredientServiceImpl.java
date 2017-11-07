@@ -41,6 +41,11 @@ public class IngredientServiceImpl implements IngredientService {
         repository.update(detachedEntity);
     }
 
+    @Override
+    public Ingredient merge(Ingredient detachedEntity) {
+        return repository.mergeStateWithDbEntity(detachedEntity);
+    }
+
     @Transactional
     @Override
     public void delete(final Ingredient persistentOrDetachedEntity) {

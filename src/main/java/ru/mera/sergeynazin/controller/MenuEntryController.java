@@ -32,21 +32,21 @@ public class MenuEntryController {
     }
 
     @Async
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE } )
     public CompletableFuture<ResponseEntity<Collection<MenuEntry>>> getAllMenuEntrysInJSON() {
         return CompletableFuture.completedFuture(ResponseEntity.ok(menuEntryService.getAll()));
     }
 
 
     @Async
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE } )
     public CompletableFuture<ResponseEntity<Collection<MenuEntry>>> getAllMenuEntrysInXML() {
         return CompletableFuture.completedFuture(ResponseEntity.ok(menuEntryService.getAll()));
     }
 
     @Admin
     @Async
-    @PostMapping(value = "/shaurma/add/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/shaurma/add/{id}", produces = { MediaType.APPLICATION_JSON_VALUE } )
     public CompletableFuture<ResponseEntity<?>> addAsJSON(@PathVariable("id") final Long id) {
         return CompletableFuture.completedFuture(add(id));
     }
@@ -70,14 +70,14 @@ public class MenuEntryController {
 
     @Admin
     @Async
-    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = { MediaType.APPLICATION_JSON_VALUE } )
     public CompletableFuture<ResponseEntity<?>> deleteAsJSON(@PathVariable("id") final Long id) {
         return CompletableFuture.completedFuture(delete(id));
     }
 
     @Admin
     @Async
-    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = { MediaType.APPLICATION_XML_VALUE } )
     public CompletableFuture<ResponseEntity<?>> deleteAsXML(@PathVariable("id") final Long id) {
         return CompletableFuture.completedFuture(delete(id));
     }

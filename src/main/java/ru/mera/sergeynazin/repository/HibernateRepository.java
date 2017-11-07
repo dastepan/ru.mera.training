@@ -51,6 +51,7 @@ public interface HibernateRepository extends JpaRepository, GenericRepository {
      * @return updated managed Entity
      */
     @SuppressWarnings({"unchecked"})
+    @Override
     default <T> T mergeStateWithDbEntity(final T newStatefulEntityWithId) {
         return (T) getSession().merge(newStatefulEntityWithId);
     }
