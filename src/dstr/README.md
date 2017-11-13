@@ -1,3 +1,6 @@
+
+![Image alt](https://github.com/Sobolev-Sergey/ru.mera.training/src/dstr/main.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
