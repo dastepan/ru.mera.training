@@ -19,12 +19,11 @@
 
     <bean id="jsonUtil" class="org.pizza.json.JsonUtil"/>
     <bean id="hibernateUtil" class="org.pizza.hibernate.HibernateUtil" init-method="init"/>
+    <bean id="cntx" class="org.pizza.cntx.Cntx"/>
 
     <bean id="pizza" class="org.pizza.hibernate.pizza.Pizza" />
-    <bean id="ingredient" class="org.pizza.hibernate.ingredient.Ingredient"/>
-    <bean id="menu" class="org.pizza.hibernate.menu.Menu" >
-        <constructor-arg ref="jsonUtil"/>
-    </bean>
+    <bean id="ingredient" class="org.pizza.hibernate.ingredient.Ingredient" scope="prototype"/>
+    <bean id="menu" class="org.pizza.hibernate.menu.Menu" init-method="init"/>
     <bean id="autoincrementer" class="org.pizza.hibernate.order.AutoIncrementer"/>
     <bean id="order" scope="prototype" class="org.pizza.hibernate.order.Order" init-method="init">
         <property name="autoIncrement" ref="autoincrementer"/>

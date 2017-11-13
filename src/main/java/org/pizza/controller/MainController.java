@@ -19,10 +19,6 @@ import java.util.List;
 public class MainController {
     @Autowired
     private HibernateUtil hibernateUtil;
-    @Autowired
-    private  Menu menu;
-    @Autowired
-    private ApplicationContext context;
 
     @RequestMapping(value="/menu", method= RequestMethod.GET)
     @ResponseBody
