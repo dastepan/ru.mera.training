@@ -7,8 +7,12 @@
 <head>
     <title>JSP java in HTML</title>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-    <link  href="<c:url value="main.css"/>" rel="stylesheet">
-    <script src="script.js"></script>
+    <%--загрузка jquery из google--%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <%--подключам скрипты--%>
+    <script type="text/javascript"><%@include file="/WEB-INF/resources/script.js"%></script>
+    <%--подключаем CSS--%>
+    <style><%@include file="/WEB-INF/resources/mainStyle.css"%></style>
 </head>
 
 <body>

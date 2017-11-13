@@ -14,18 +14,12 @@
         <property name="connection.username">root</property>
         <property name="connection.password">1234</property>
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
-        <!--<property name="show_sql">true</property>-->
         <property name="format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="ru.mera.training.ingredient.Ingredient"/>
-        <mapping class="ru.mera.training.menu.Menu"/>
-        <mapping class="ru.mera.training.order.Order"/>
-        <mapping class="ru.mera.training.shaurma.Shaurma"/>
+        <mapping class="org.pizza.hibernate.ingredient.Ingredient"/>
+        <mapping class="org.pizza.hibernate.menu.Menu"/>
+        <mapping class="org.pizza.hibernate.order.Order"/>
+        <mapping class="org.pizza.hibernate.pizza.Pizza"/>
     </session-factory>
 </hibernate-configuration>
-
-        <!--useUnicode=true&amp;-->
-        <!--useJDBCCompliantTimezoneShift=true&amp;-->
-        <!--useLegacyDatetimeCode=false&amp;-->
-        <!--serverTimezone=UTC&amp;-->
