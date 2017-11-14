@@ -18,7 +18,7 @@ public class Menu implements Describable {
         this.price = getPrice();
     }
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Menu implements Describable {
     }
 
     @Override
-    public Integer getCost() {
+    public int getCost() {
         return getPrice();
     }
 
@@ -48,7 +48,7 @@ public class Menu implements Describable {
         this.price = price;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         price = 0;
         for (Shaurma shaurma : shaurmaSet) {
             price += shaurma.getCost();

@@ -17,7 +17,7 @@ public class Ingredient implements Describable {
     }
 
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -35,7 +35,7 @@ public class Ingredient implements Describable {
     }
 
     @Override
-    public Integer getCost() {
+    public int getCost() {
         return cost;
     }
 
