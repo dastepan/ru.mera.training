@@ -1,15 +1,6 @@
 package org.pizza.hibernate.menu;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.pizza.cntx.Cntx;
-import org.pizza.hibernate.HibernateUtil;
-import org.pizza.hibernate.ingredient.Ingredient;
 import org.pizza.hibernate.pizza.Pizza;
-import org.pizza.json.JsonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,32 +18,8 @@ public class Menu {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myMenu")
     private List<Pizza> pizzas;
 
-    @Transient
-    String ingredients= "ingredients.json";
-    @Transient
-    String menu= "menu.json";
-    @Transient
-    @Autowired
-    HibernateUtil hibernateUtil;
-    @Transient
-    @Autowired
-    JsonUtil jsonUtil;
-    @Transient
-    @Autowired
-    Cntx cntx;
-
 
     public Menu() {
-    }
-
-    private void init(){
-        JSONArray arrayJson = jsonUtil.readFile(ingredients);
-        for (Object obj : arrayJson) {
-            JSONObject innerObj = (JSONObject) obj;
-            Ingredient ingredient=(Ingredient) cntx.getContext().getBean(Ingredient.class);
-            ingredient.setCost((float)(long)innerObj.get("cost"));
-            ingredient.setName((String) innerObj.get("name"));
-        }
     }
 
     public List<Pizza> getPizzas() {

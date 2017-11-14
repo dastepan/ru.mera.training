@@ -2,23 +2,23 @@
   "array":[
 
     {
-      "name": "Четыри сыра",
-      "ingredients": ["соус", "сыр Чеддер", "сыр Пармезан", "сыр Моцарелла", "сыр Дор Блю"]
+      "name": "Four cheeses",
+      "ingredients": ["sauce", "cheese Cheddar", "cheese Parmesan", "cheese Mozzarella", "cheese Dor Blue"]
     },
 
     {
-      "name": "Пепперони",
-      "ingredients": ["соус", "сыр Российский", "пепперони"]
+      "name": "Pepperoni",
+      "ingredients": ["sauce", "cheese Cheddar", "pepperoni"]
     },
 
     {
-      "name": "Маргарита",
-      "ingredients": ["соус", "томат", "сыр Моцарелла", "базилик"]
+      "name": "Margarita",
+      "ingredients": ["sauce", "tomato", "cheese Mozzarella", "basil"]
     },
 
     {
-      "name": "Гавайская",
-      "ingredients": ["соус", "курица", "сыр Российский", "ананас"]
+      "name": "Hawaiian",
+      "ingredients": ["sauce", "chicken", "cheese Cheddar", "pineapple"]
     }
-]
+  ]
 }

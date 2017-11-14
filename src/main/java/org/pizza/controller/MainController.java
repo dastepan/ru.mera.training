@@ -23,7 +23,7 @@ public class MainController {
     @RequestMapping(value="/menu", method= RequestMethod.GET)
     @ResponseBody
     public List<String> getMenu(ModelMap model){
-        Session session= hibernateUtil.getNewSession();
+//        Session session= hibernateUtil.getNewSession();
         //1. При инициализации бина menu нужно из файла забрать инфу(должна переместиться в базу)
         //2. получить список из SQL и заменить хардкод на данные
         //hardcode

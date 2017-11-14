@@ -1,8 +1,6 @@
 package org.pizza.hibernate.ingredient;
 
-import org.json.simple.JSONArray;
 import org.pizza.hibernate.pizza.Pizza;
-import org.pizza.json.JsonUtil;
 
 import javax.persistence.*;
 import java.util.Set;

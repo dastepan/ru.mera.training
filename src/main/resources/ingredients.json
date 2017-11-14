@@ -1,60 +1,56 @@
 {
   "array":[
     {
-      "name": "соус",
+      "name": "sauce",
       "cost": 25
     },
     {
-      "name": "сыр Чеддер",
+      "name": "cheese Cheddar",
       "cost": 55
     },
     {
-      "name": "сыр Пармезан",
+      "name": "cheese Parmesan",
       "cost": 60
     },
     {
-      "name": "сыр Моцарелла",
+      "name": "cheese Mozzarella",
       "cost": 45
     },
     {
-      "name": "сыр Дор Блю",
+      "name": "cheese Dor blue",
       "cost": 90
     },
     {
-      "name": "сыр Российский",
-      "cost": 45
-    },
-    {
-      "name": "пепперони",
+      "name": "pepperoni",
       "cost": 30
     },
     {
-      "name": "томат",
+      "name": "tomato",
       "cost": 35
     },
     {
-      "name": "базилик",
+      "name": "basil",
       "cost": 15
     },
     {
-      "name": "курица",
+      "name": "chicken",
       "cost": 50
     },
     {
-      "name": "бекон",
+      "name": "bacon",
       "cost": 70
     },
     {
-      "name": "ананас",
+      "name": "pineapple",
       "cost": 40
     },
     {
-      "name": "оливки",
+      "name": "olives",
       "cost": 30
     },
     {
-      "name": "анчоусы",
+      "name": "anchovies",
       "cost": 80
     }
-    ]
+  ]
 }
