@@ -18,6 +18,7 @@
         <java.version>1.8</java.version>
         <spring.version>4.3.11.RELEASE</spring.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
+        <postgresql.version>9.4.1212.jre7</postgresql.version>
     </properties>
 
     <dependencies>
@@ -49,11 +50,6 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>4.3.3.Final</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
@@ -67,9 +63,36 @@
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.3.Final</version>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <!-- JSP -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- Javax -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -97,7 +120,6 @@
             <artifactId>sisu-inject-bean</artifactId>
             <version>1.4.2</version>
         </dependency>
-
 
     </dependencies>
 
