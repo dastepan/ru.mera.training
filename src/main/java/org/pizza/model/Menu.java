@@ -1,6 +1,4 @@
-package org.pizza.hibernate.menu;
-
-import org.pizza.hibernate.pizza.Pizza;
+package org.pizza.model;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +13,7 @@ public class Menu {
     private int id;
     @Column(name = "price")
     private float price;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "myMenu")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<Pizza> pizzas;
 
 

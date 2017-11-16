@@ -1,4 +1,4 @@
-package org.pizza.hibernate;
+package org.pizza.service.utilities;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

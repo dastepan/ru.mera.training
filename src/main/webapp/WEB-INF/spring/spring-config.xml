@@ -17,11 +17,11 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="jsonUtil" class="org.pizza.json.JsonUtil"/>
-    <bean id="hibernateUtil" class="org.pizza.hibernate.HibernateUtil" init-method="init"/>
-    <bean id="cntx" class="org.pizza.cntx.Cntx"/>
-    <bean id="autoincrementer" class="org.pizza.hibernate.order.AutoIncrementer"/>
-    <bean id="dao" class="org.pizza.dao.DAO" init-method="init"/>
+    <bean id="jsonUtil" class="org.pizza.service.utilities.JsonUtil"/>
+    <bean id="hibernateUtil" class="org.pizza.service.utilities.HibernateUtil" init-method="init"/>
+    <bean id="cntx" class="org.pizza.service.utilities.Cntx"/>
+    <bean id="autoincrementer" class="org.pizza.service.utilities.AutoIncrementer"/>
+    <!--<bean id="dao" class="org.pizza.dao.DAO" init-method="init"/>-->
 
 
 </beans>

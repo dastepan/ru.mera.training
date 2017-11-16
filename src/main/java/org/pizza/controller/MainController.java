@@ -1,15 +1,12 @@
 package org.pizza.controller;
 
-import org.pizza.hibernate.HibernateUtil;
-import org.hibernate.Session;
+import org.pizza.service.utilities.HibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.pizza.hibernate.menu.Menu;
 
 
 import java.util.ArrayList;
@@ -20,25 +17,10 @@ public class MainController {
     @Autowired
     private HibernateUtil hibernateUtil;
 
+
     @RequestMapping(value="/menu", method= RequestMethod.GET)
     @ResponseBody
     public List<String> getMenu(ModelMap model){
-//        Session session= hibernateUtil.getNewSession();
-        //1. При инициализации бина menu нужно из файла забрать инфу(должна переместиться в базу)
-        //2. получить список из SQL и заменить хардкод на данные
-        //hardcode
-
-//        List<Pizza>hardcodeList=new ArrayList<>();
-//        Pizza p1=(Pizza) context.getBean("pizza");
-//        Pizza p2=(Pizza) context.getBean("pizza");
-//        Pizza p3=(Pizza) context.getBean("pizza");
-//        p1.setName("Best");
-//        p2.setName("Yummy");
-//        p3.setName("First");
-//        hardcodeList.add(p1);
-//        hardcodeList.add(p2);
-//        hardcodeList.add(p3);
-//        return hardcodeList;
         List<String> list=new ArrayList<>();
         list.add("one");list.add("two");list.add("three");
         return list;

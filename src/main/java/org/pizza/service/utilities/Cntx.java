@@ -1,4 +1,4 @@
-package org.pizza.cntx;
+package org.pizza.service.utilities;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

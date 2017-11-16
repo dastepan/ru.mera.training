@@ -1,7 +1,7 @@
-package org.pizza.hibernate.order;
+package org.pizza.model;
 
 
-import org.pizza.hibernate.pizza.Pizza;
+import org.pizza.service.utilities.AutoIncrementer;
 
 import javax.persistence.*;
 import java.util.Date;

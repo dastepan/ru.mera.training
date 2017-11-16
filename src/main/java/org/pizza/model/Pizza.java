@@ -1,14 +1,14 @@
-package org.pizza.hibernate.pizza;
+package org.pizza.model;
 
-import org.pizza.hibernate.ingredient.Ingredient;
-import org.pizza.hibernate.menu.Menu;
-import org.pizza.hibernate.order.Order;
+import org.pizza.model.Ingredient;
+import org.pizza.model.Menu;
+import org.pizza.model.Order;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name= "org/pizza/hibernate/pizza")
+@Table(name="pizza")
 public class Pizza {
     @Id
     @GeneratedValue
@@ -17,7 +17,7 @@ public class Pizza {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menuId")
-    private Menu myMenu;
+    private Menu menu;
     @ManyToMany
     @JoinTable(
             name="pizzaAndIngredients",
@@ -36,11 +36,11 @@ public class Pizza {
     public Pizza() {
     }
 
-    public Menu getMyMenu() {
-        return myMenu;
+    public Menu getMenu() {
+        return menu;
     }
-    public void setMyMenu(Menu myMenu) {
-        this.myMenu = myMenu;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
     public Set<Order> getOrders() {
         return orders;
@@ -76,6 +76,9 @@ public class Pizza {
         return result;
      }
 
+     public void addIngredient(Ingredient ingredient){
+        ingredients.add(ingredient);
+     }
 
 
 }

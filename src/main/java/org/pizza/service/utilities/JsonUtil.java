@@ -1,4 +1,4 @@
-package org.pizza.json;
+package org.pizza.service.utilities;
 
 
 import org.json.simple.JSONArray;

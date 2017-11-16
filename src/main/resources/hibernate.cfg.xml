@@ -17,9 +17,10 @@
         <property name="format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="org.pizza.hibernate.ingredient.Ingredient"/>
-        <mapping class="org.pizza.hibernate.menu.Menu"/>
-        <mapping class="org.pizza.hibernate.order.Order"/>
-        <mapping class="org.pizza.hibernate.pizza.Pizza"/>
+        <mapping class="org.pizza.model.Ingredient"/>
+        <mapping class="org.pizza.model.Menu"/>
+        <mapping class="org.pizza.model.Order"/>
+        <mapping class="org.pizza.model.Pizza"/>
+
     </session-factory>
 </hibernate-configuration>

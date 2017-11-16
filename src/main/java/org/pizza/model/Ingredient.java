@@ -1,9 +1,13 @@
-package org.pizza.hibernate.ingredient;
-
-import org.pizza.hibernate.pizza.Pizza;
+package org.pizza.model;
 
 import javax.persistence.*;
 import java.util.Set;
+
+
+@NamedQueries({
+        @NamedQuery(name="Ingredient.findByName",
+                query="SELECT e FROM Ingredient e WHERE e.name = :name")
+})
 
 @Entity
 @Table(name = "ingredients")
