@@ -5,11 +5,12 @@ import org.pizza.model.Menu;
 import org.pizza.model.Order;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name="pizza")
-public class Pizza {
+public class Pizza implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false, updatable = false)

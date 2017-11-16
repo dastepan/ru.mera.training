@@ -1,26 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-
-    <persistence-unit name="DLSystemPU">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.angecrow.dls.domain.model.DLUser</class>
-        <class>com.angecrow.dls.domain.model.Question</class>
-        <class>com.angecrow.dls.domain.model.Lesson</class>
-        <class>com.angecrow.dls.domain.model.StudentsGroup</class>
-        <class>com.angecrow.dls.domain.model.Study</class>
-        <class>com.angecrow.dls.domain.model.Test</class>
-        <class>com.angecrow.dls.domain.model.UserTestResult</class>
-        <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://127.0.0.1:3306/dls"/>
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="root"/>
-            <property name="hibernate.archive.autodetection" value="class"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
-
-        </properties>
-    </persistence-unit>
-</persistence>
+<persistence-unit name="ru.easyjava.data.jpa.hibernate">
+    <properties>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+        <property name="hibernate.connection.url" value="jdbc:h2:mem:test"/>
+    </properties>
+</persistence-unit>

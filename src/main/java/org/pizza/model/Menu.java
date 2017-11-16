@@ -1,12 +1,13 @@
 package org.pizza.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
 @Table(name="menu")
-public class Menu {
+public class Menu implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false, updatable = false)

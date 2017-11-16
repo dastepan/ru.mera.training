@@ -4,13 +4,14 @@ package org.pizza.model;
 import org.pizza.service.utilities.AutoIncrementer;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 
 @Entity
 @Table(name="orders")
-public class Order {
+public class Order implements Serializable {
     @Transient
     private AutoIncrementer autoIncrement;
     @Id
