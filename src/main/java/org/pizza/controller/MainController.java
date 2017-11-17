@@ -17,8 +17,7 @@ import java.util.List;
 
 @Controller
 public class MainController {
-    @Autowired
-    Cntx cntxGetter;
+    private Cntx cntxGetter;
 
 
     @RequestMapping(value="/menu", method= RequestMethod.GET)
@@ -27,6 +26,11 @@ public class MainController {
         List<String> list=new ArrayList<>();
         list.add("one");list.add("two");list.add("three");
         return list;
+    }
+
+    @Autowired
+    public Cntx getCntxGetter() {
+        return cntxGetter;
     }
 }
 

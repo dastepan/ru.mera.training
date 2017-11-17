@@ -1,33 +1,36 @@
 package org.pizza.service.impl;
 
 import org.pizza.model.Pizza;
+import org.pizza.repository.impl.PizzaRepository;
 import org.pizza.service.ServiceCommand;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class PizzaServiceImpl implements ServiceCommand<Pizza> {
+    private PizzaRepository repository;
+
     @Override
     public void save(Pizza entity) {
-
-    }
-
-    @Override
-    public void update(Pizza entity) {
-
+        repository.saveAndFlush(entity);
     }
 
     @Override
     public void delete(Pizza entity) {
-
+        repository.delete(entity);
     }
 
     @Override
     public List<Pizza> getAll() {
-        return null;
+        return repository.findAll();
     }
 
-    @Override
     public List<Pizza> getByName(String name) {
-        return null;
+        return repository.findByName(name);
+    }
+
+    @Autowired
+    public PizzaRepository getRepository() {
+        return repository;
     }
 }
