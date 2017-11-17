@@ -1,8 +1,5 @@
 package org.pizza.model;
 
-import org.pizza.model.Ingredient;
-import org.pizza.model.Menu;
-import org.pizza.model.Order;
 
 import javax.persistence.*;
 import java.io.Serializable;

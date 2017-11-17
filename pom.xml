@@ -27,9 +27,9 @@
 		</dependency>		<!--javax.servlet-api-->
 
 		<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-core</artifactId>
-		<version>5.0.1.RELEASE</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.0.1.RELEASE</version>
 		</dependency>		<!--spring-core-->
 
 		<dependency>
@@ -62,17 +62,19 @@
 			<version>2.0.1.RELEASE</version>
 		</dependency>		<!-- spring-data-jpa -->
 
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.39</version>
-		</dependency>		<!--mysql-connector-java-->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+        <!--mysql-connector-java-->
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.2.11.Final</version>
-        </dependency>		<!--model-core-->
+        </dependency>		<!--hibernate-core-->
 
 		<dependency>
 		<groupId>org.hibernate</groupId>
@@ -102,14 +104,21 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.2</version>
-		</dependency>
+		</dependency> <!--jackson-->
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<version>1.5.7.RELEASE</version>
-		</dependency>        <!--jackson-->
-    </dependencies>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>9.0.1</version>
+		</dependency>	<!-- tomcat-dbcp (for DataSource in PersistenceConfig.class)-->
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>23.4-jre</version>
+		</dependency> <!-- guava for preconditions -->
+
+	</dependencies>
 
 	<build>
 		<plugins>

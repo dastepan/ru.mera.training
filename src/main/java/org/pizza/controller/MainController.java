@@ -1,6 +1,6 @@
 package org.pizza.controller;
 
-import org.pizza.service.utilities.HibernateUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,9 +14,6 @@ import java.util.List;
 
 @Controller
 public class MainController {
-    @Autowired
-    private HibernateUtil hibernateUtil;
-
 
     @RequestMapping(value="/menu", method= RequestMethod.GET)
     @ResponseBody
