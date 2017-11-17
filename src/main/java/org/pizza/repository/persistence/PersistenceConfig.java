@@ -18,14 +18,13 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-
 public class PersistenceConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("org.pizza.model");
+        em.setPackagesToScan(new String[]{"org.pizza.model"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

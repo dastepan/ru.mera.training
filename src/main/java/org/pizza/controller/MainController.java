@@ -1,7 +1,10 @@
 package org.pizza.controller;
 
 
+import org.pizza.service.utilities.Cntx;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,9 @@ import java.util.List;
 
 @Controller
 public class MainController {
+    @Autowired
+    Cntx cntxGetter;
+
 
     @RequestMapping(value="/menu", method= RequestMethod.GET)
     @ResponseBody
