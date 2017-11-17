@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font: 14px/20px Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: #47a3da;
+}
+
+.comments-box {
+    min-width: 200px;
+    max-width: 90%;
+    margin: 40px auto;
+    border: 2px solid #fff;
+}
+
+.comments-form {
+    padding: 0 40px;
+    border-bottom: 2px solid #fff;
+}
+
+.comments-form label {
+    font-size: 1.1em;
+    display: block;
+    padding: 40px 5px 5px 2px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.comments-form input, .comments-form textarea {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 1.4em;
+    line-height: 1.5;
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    color: #fff;
+    border: 2px solid #fff;
+    background: transparent;
+}
+
+.comments-form textarea{
+    min-height: 150px;
+}
+
+.comments-form input:focus,
+.comments-form textarea:focus,
+.comments-form label:active + input,
+.comments-form label:active + textarea {
+    border-color: #10689a;
+    outline: none;
+}
+
+.comments-form input[type='submit'], button {
+    font-size: 1.1em;
+    display: block;
+    width: auto;
+    margin: 40px auto;
+    padding: 15px 30px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    border: 3px solid #10689a;
+    background: #10689a;
+}
+
+.comments-form input[type='submit']:hover,
+.comments-form input[type='submit']:focus,
+button:hover,
+button:focus{
+    background: #1478b1;
+}
+
+button {
+    position: absolute;
+    top: -16px;
+    right: 0;
+    margin: 0;
+}
+
+.comments-body {
+    position: relative;
+    margin: 30px 40px 0;
+}
+
+.comments-title {
+    font-size: 1.3em;
+    padding: 0 0 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.comments-list {
+    margin: 0;
+    padding: 30px 0 0;
+    list-style-type: none;
+    border-top: 2px solid #fff;
+}
+
+.comments-item {
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 1.4;
+    position: relative;
+    margin-bottom: 30px;
+    padding: 1em 2em;
+    word-wrap: break-word;
+    color: #fff;
+    border-radius: 5px;
+    background: #10689a;
+}
+
+.comments-item:after {
+    position: absolute;
+    top: 1.2em;
+    right: 100%;
+    width: 0;
+    height: 0;
+    content: '';
+    pointer-events: none;
+    border: solid transparent;
+    border-width: 10px;
+    border-right-color: #10689a;
+}
+
+.comments-item h3 {
+    position: relative;
+    margin-top: 0;
+    padding: 0 55px 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .4);
+}
+
+.comments-item a {
+    font-size: 14px;
+    position: absolute;
+    top: 5px;
+    right: 0;
+    transition: opacity .3s linear;
+    text-decoration: none;
+    letter-spacing: 1px;
+    opacity: .7;
+    color: #fff;
+    will-change: transform;
+}
+
+.comments-item a:hover {
+    opacity: 1;
+}
