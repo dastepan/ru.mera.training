@@ -30,6 +30,6 @@ public class AppController {
     @RequestMapping("/create")
     public String tableCreationInfo(Model model){
         model.addAttribute("status", createTable.createTableStatus());
-        return "create";
+        return "status";
     }
 }

@@ -16,14 +16,14 @@ public class CreateTable {
     }
 
     public String createTableStatus() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS ingredients");
-        jdbcTemplate.execute("CREATE TABLE ingredients \n" +
+        jdbcTemplate.execute("DROP TABLE IF EXISTS public.ingredients");
+        jdbcTemplate.execute("CREATE TABLE public.ingredients\n" +
                 "(\n" +
-                "id INT NOT NULL, \n" +
-                "name VARCHAR (45) NOT NULL \n" +
-                "cost DECIMAL " +
-                "CONSTRAINT firstkey PRIMARY KEY (id) \n" +
-                ");");
+                "    id integer NOT NULL,\n" +
+                "    name character varying COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                "    cost integer NOT NULL,\n" +
+                "    CONSTRAINT ingredients_pkey PRIMARY KEY (id)\n" +
+                ")");
         return "table created";
     }
 }

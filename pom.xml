@@ -9,7 +9,7 @@
     <packaging>war</packaging>
 
     <name>training</name>
-    <description>Shawerma order project</description>
+    <description>Shop order project</description>
 
 
     <properties>
@@ -19,6 +19,7 @@
         <spring.version>4.3.11.RELEASE</spring.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
         <postgresql.version>9.4.1212.jre7</postgresql.version>
+        <mysql.version>6.0.6</mysql.version>
     </properties>
 
     <dependencies>
@@ -60,18 +61,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- Hibernate -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
         <!-- JSP -->
         <dependency>
             <groupId>jstl</groupId>
@@ -87,10 +76,30 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
@@ -124,7 +133,7 @@
     </dependencies>
 
     <build>
-        <finalName>shawerma</finalName>
+        <finalName>shop</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
         <plugins>
