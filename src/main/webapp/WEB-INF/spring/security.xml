@@ -1,0 +1,42 @@
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns="http://www.springframework.org/schema/aop"
+             xsi:schemaLocation="
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/mvc
+                http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop.xsd" >
+<!--
+
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <beans:bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver" />
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+-->
+
+    <config>
+        <aspect id = "securityAspect" ref = "securityManager">
+
+            <pointcut id = "check"
+                      expression = "execution(public * ru.mera.sergeynazin.controller.*Controller.*(..))
+                            &amp;&amp; args(principal, ..)
+                            &amp;&amp; @annotation(ru.mera.sergeynazin.controller.advice.Admin)" />
+
+            <before arg-names="principal"
+                    pointcut-ref = "check"
+                    method = "checkPermissions"/>
+            <!--
+            <aop:after-throwing pointcut-ref = "check"
+                                throwing = "ex"
+                                method = "notEnoughPermissions"/>-->
+        </aspect>
+    </config>
+
+    <beans:bean id="securityManager" class="ru.mera.sergeynazin.controller.advice.CheckPermissions" />
+
+</beans:beans>
