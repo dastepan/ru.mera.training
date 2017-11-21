@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class IngredientServiceImpl implements ServiceCommand<Ingredient> {
-    private IngredientRepository repository;
+    private IngredientRepository repository;//внизу Autowire над getter
 
     @Override
     public void save(Ingredient entity) {

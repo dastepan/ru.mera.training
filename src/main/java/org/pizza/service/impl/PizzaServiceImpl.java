@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class PizzaServiceImpl implements ServiceCommand<Pizza> {
-    private PizzaRepository repository;
+    private PizzaRepository repository;//внизу Autowire над getter
 
     @Override
     public void save(Pizza entity) {

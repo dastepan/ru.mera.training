@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class OrderServiceImpl implements ServiceCommand<Order> {
-    private OrderRepository repository;
+    private OrderRepository repository;//внизу Autowire над getter
 
 
     @Override

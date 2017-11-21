@@ -28,9 +28,10 @@
     <bean id="cntx" class="org.pizza.service.utilities.Cntx"/>
     <bean id="autoincrementer" class="org.pizza.service.utilities.AutoIncrementer"/>
 
-    <bean id="ingredient" class="org.pizza.service.impl.IngredientServiceImpl" scope="prototype"/>
-    <bean id="menu" class="org.pizza.service.impl.MenuServiceImpl" />
-    <bean id="order" class="org.pizza.service.impl.OrderServiceImpl" scope="prototype"/>
-    <bean id="pizza" class="org.pizza.service.impl.PizzaServiceImpl" scope="prototype"/>
+    <bean id="ingredientService" class="org.pizza.service.impl.IngredientServiceImpl" />
+    <bean id="menuService" class="org.pizza.service.impl.MenuServiceImpl" init-method="init" depends-on="jsonUtil"/>
+    <bean id="orderService" class="org.pizza.service.impl.OrderServiceImpl" />
+    <bean id="pizzaService" class="org.pizza.service.impl.PizzaServiceImpl" />
+
 
 </beans>
