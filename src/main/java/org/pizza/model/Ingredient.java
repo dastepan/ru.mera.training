@@ -2,7 +2,8 @@ package org.pizza.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NamedQueries({
@@ -14,7 +15,7 @@ import java.util.Set;
 @Table(name = "ingredients")
 public class Ingredient implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
     @Column(name = "name", length = 50)
@@ -22,10 +23,11 @@ public class Ingredient implements Serializable{
     @Column(name = "cost", length = 15)
     private float cost;
     @ManyToMany(mappedBy = "ingredients")
-    private Set<Pizza> pizzas;
+    private List<Pizza> pizzas;
 
 
     public Ingredient() {
+        pizzas=new ArrayList<>();
     }
 
     @Override
@@ -37,10 +39,10 @@ public class Ingredient implements Serializable{
                 '}';
     }
 
-    public Set<Pizza> getPizzas() {
+    public List<Pizza> getPizzas() {
         return pizzas;
     }
-    public void setPizzas(Set<Pizza> pizzas) {
+    public void setPizzas(List<Pizza> pizzas) {
         this.pizzas = pizzas;
     }
     public int getId() {
@@ -60,5 +62,27 @@ public class Ingredient implements Serializable{
     }
     public void setCost(float cost) {
         this.cost = cost;
+    }
+
+    public void addPizza(Pizza pizza){
+        pizzas.add(pizza);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ingredient that = (Ingredient) o;
+
+        if (id != that.id) return false;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }

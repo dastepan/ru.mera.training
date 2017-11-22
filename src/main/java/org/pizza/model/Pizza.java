@@ -3,13 +3,14 @@ package org.pizza.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="pizza")
 public class Pizza implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
     private String name;
@@ -21,17 +22,19 @@ public class Pizza implements Serializable {
             name="pizzaAndIngredients",
             joinColumns = {@JoinColumn(name="pizza_id")},
             inverseJoinColumns = {@JoinColumn(name="ingredient_id")})
-    private Set<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
     @ManyToMany
     @JoinTable(
         name = "pizzaAndOrder",
         joinColumns = {@JoinColumn(name="pizza_id")},
         inverseJoinColumns = {@JoinColumn(name="order_id")})
-    private Set<Order> orders;
+    private List<Order> orders;
     @Transient
     private float cost;
 
     public Pizza() {
+        orders=new ArrayList<>();
+        ingredients=new ArrayList<>();
     }
 
     public Menu getMenu() {
@@ -40,16 +43,16 @@ public class Pizza implements Serializable {
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-    public Set<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
-    public void setIngredients(Set<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
     public int getId() {
@@ -78,5 +81,23 @@ public class Pizza implements Serializable {
         ingredients.add(ingredient);
      }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Pizza pizza = (Pizza) o;
+
+        if (id != pizza.id) return false;
+        if (Float.compare(pizza.cost, cost) != 0) return false;
+        if (!name.equals(pizza.name)) return false;
+        return ingredients != null ? ingredients.equals(pizza.ingredients) : pizza.ingredients == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

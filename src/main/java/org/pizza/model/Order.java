@@ -15,7 +15,7 @@ public class Order implements Serializable {
     @Transient
     private AutoIncrementer autoIncrement;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String orderNumber;
     private float totalCoast;
     @ManyToMany(mappedBy = "orders")
@@ -61,4 +61,20 @@ public class Order implements Serializable {
         this.orderNumber = orderNumber;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (Float.compare(order.totalCoast, totalCoast) != 0) return false;
+        if (!orderNumber.equals(order.orderNumber)) return false;
+        return pizzaSet != null ? pizzaSet.equals(order.pizzaSet) : order.pizzaSet == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return orderNumber.hashCode();
+    }
 }

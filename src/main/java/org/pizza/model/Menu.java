@@ -2,6 +2,7 @@ package org.pizza.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,16 +10,17 @@ import java.util.List;
 @Table(name="menu")
 public class Menu implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
-    @Column(name = "price")
-    private float price;
+    @Column
+    private String name;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<Pizza> pizzas;
 
 
     public Menu() {
+        pizzas=new ArrayList<>();
     }
 
     public List<Pizza> getPizzas() {
@@ -37,15 +39,32 @@ public class Menu implements Serializable {
         this.id = id;
     }
 
-    public float getPrice() {
-        return price;
+    public String getName() {
+        return name;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public void addPizza(Pizza pizza){
+        pizzas.add(pizza);
+    }
+    @Override
+    public int hashCode() {
+        return id;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Menu menu = (Menu) o;
+
+        if (id != menu.id) return false;
+        return pizzas != null ? pizzas.equals(menu.pizzas) : menu.pizzas == null;
+    }
 }
 
 
