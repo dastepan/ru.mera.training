@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mera.training.shop.dao.BasicDao;
-import ru.mera.training.shop.entity.Ingredient;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -55,8 +54,8 @@ public class BasicDaoImpl<T> implements BasicDao<T>{
     }
 
     @Override
-    public T delete(Ingredient entity) {
+    public T delete(T entity) {
         sessionFactory.getCurrentSession().delete(entity);
-        return null;
+        return entity;
     }
 }

@@ -1,7 +1,6 @@
 package ru.mera.training.shop.dao;
 
 import org.hibernate.Session;
-import ru.mera.training.shop.entity.Ingredient;
 
 import java.util.List;
 
@@ -41,10 +40,10 @@ public interface BasicDao<T> {
      **/
     T update(T entity);
     /**
-     * delete entity from DB
+     * deleteIngredientById entity from DB
      *
      * @param entity  entity
-     * @return specify entity
+     * @return deleted entity
      **/
-    T delete(Ingredient entity);
+    T delete(T entity);
 }

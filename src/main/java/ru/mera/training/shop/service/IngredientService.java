@@ -35,12 +35,12 @@ public interface IngredientService {
      **/
     Ingredient updateIngredient(Ingredient ingredient);
     /**
-     * method to delete ingredient from DB
+     * method to deleteIngredientById ingredient from DB
      *
-     * @param ingredient   ingredient that should be deleted from DB
-     * @return Ingredient
+     * @param id  ingredient's id that should be deleted from DB
+     * @return deleted Ingredient
      **/
-    Ingredient deleteIngredient(Ingredient ingredient);
+    Ingredient deleteIngredient(int id);
     /**
      * method to get list of ingredients which have specified name
      *

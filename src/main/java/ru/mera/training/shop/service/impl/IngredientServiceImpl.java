@@ -24,6 +24,11 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
+    public List<Ingredient> getIngredientsByName(String name) {
+        return ingredientDao.getIngredientsByName(name);
+    }
+
+    @Override
     public Ingredient addIngredient(Ingredient ingredient) {
         return ingredientDao.add(ingredient);
     }
@@ -34,12 +39,7 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public Ingredient deleteIngredient(Ingredient ingredient) {
-        return ingredientDao.delete(ingredient);
-    }
-
-    @Override
-    public List<Ingredient> getIngredientsByName(String name) {
-        return ingredientDao.getIngredientsByName(name);
+    public Ingredient deleteIngredient(int id) {
+        return ingredientDao.delete(getIngredientById(id));
     }
 }
