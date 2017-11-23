@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/context
+	    http://www.springframework.org/schema/context/spring-context.xsd
+	    http://www.springframework.org/schema/task
+	    http://www.springframework.org/schema/task/spring-task.xsd
+	    http://www.springframework.org/schema/aop
+	    http://www.springframework.org/schema/aop/spring-aop.xsd" >
+
+    <!-- Spring MVC annotations(@RestController etc.) SCANNING -->
+    <context:component-scan base-package="ru.mera.sergeynazin.controller"/>
+
+    <!--@Async-->
+    <task:annotation-driven />
+    <!--JSR-303 Bean Validation API. Expected to be Hibernate Validator todo (check the classpath: to make sure it's there) -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+
+    <!-- Only for SPRING native validation (NOT JSR-303) todo delete-->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!--<value>messages</value>-->
+            </list>
+        </property>
+    </bean>
+
+    <bean id="messageAccessor" class="org.springframework.context.support.MessageSourceAccessor">
+        <constructor-arg index="0" ref="messageSource"/>
+    </bean>
+
+    <!--Exception Handling-->
+<!--
+    TODO: Delete if will not implement
+    <bean id="simpleMappingExceptionResolver" class="ru.mera.sergeynazin.controller.advice.MySimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="Exception" value="generic_error"></entry>
+            </map>
+        </property>
+        <property name="defaultErrorView" value="generic_error"/>
+    </bean>
+-->
+    <!--FIXME: Isn't it enabled by default-->
+    <!-- Configure to plugin JSON as request and response in method handler -->
+<!--
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonMessageConverter"/>
+                <ref bean="xmlMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+-->
+
+    <!-- Configure bean to convert JSON/XML to POJO and vice versa -->
+<!--
+    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+    <bean id="xmlMessageConverter" class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter" />
+-->
+
+    <!--MyBeans-->
+    <bean id="ingredientController" class="ru.mera.sergeynazin.controller.IngredientController">
+        <property name="ingredientService" ref="ingredientServiceImpl" />
+    </bean>
+    <bean id="menuEntryController" class="ru.mera.sergeynazin.controller.MenuEntryController">
+        <property name="menuEntryService" ref="menuEntryServiceImpl" />
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
+    </bean>
+    <bean id="orderController" class="ru.mera.sergeynazin.controller.OrderController" >
+        <property name="orderService" ref="orderServiceImpl" />
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
+        <property name="ingredientService" ref="ingredientServiceImpl" />
+        <property name="currentOrder" ref="sessionOrder" />
+    </bean>
+    <bean id="shaurmaController" class="ru.mera.sergeynazin.controller.ShaurmaController">
+        <property name="shaurmaService" ref="shaurmaServiceImpl" />
+        <property name="ingredientService" ref="ingredientServiceImpl" />
+        <property name="currentOrder" ref="sessionOrder" />
+    </bean>
+
+    <bean id="ingredientServiceImpl" class="ru.mera.sergeynazin.service.impl.IngredientServiceImpl" >
+        <property name="repository" ref="ingredientRepository" />
+    </bean>
+    <bean id="menuEntryServiceImpl" class="ru.mera.sergeynazin.service.impl.MenuEntryServiceImpl" >
+        <property name="menuEntryRepository" ref="menuEntryRepository" />
+        <property name="shaurmaRepository" ref="shaurmaRepository" />
+    </bean>
+    <bean id="orderServiceImpl" class="ru.mera.sergeynazin.service.impl.OrderServiceImpl" >
+        <property name="orderRepository" ref="orderRepository" />
+        <property name="shaurmaRepository" ref="shaurmaRepository" />
+    </bean>
+    <bean id="shaurmaServiceImpl" class="ru.mera.sergeynazin.service.impl.ShaurmaServiceImpl" >
+        <property name="shaurmaRepository" ref="shaurmaRepository" />
+        <property name="ingredientRepository" ref="ingredientRepository" />
+    </bean>
+
+    <bean id="sessionOrder" class="ru.mera.sergeynazin.model.Order" scope="session" >
+        <property name="shaurmaList" >
+            <list value-type="ru.mera.sergeynazin.model.Shaurma" />
+        </property>
+        <aop:scoped-proxy/>
+    </bean>
+
+</beans>

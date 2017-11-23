@@ -1,0 +1,98 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd" >
+
+    <!--Modern-->
+<!--
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:hibernate.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+-->
+
+    <!--<context:property-placeholder location="classpath:jdbc.properties, classpath:hibernate.properties" />-->
+
+
+    <!-- Annotations like @Transactional -->
+    <tx:annotation-driven/>
+
+<!-- TODO: NON Production!   -->
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>-->
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/shwamera"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="strength"/>
+    </bean>
+        <!-- SessionFactory settings for Hibernate -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml" />
+        <property name="hibernateProperties" >
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</prop>
+                <prop key="hibernate.connection.charSet">UTF-8</prop>
+                <prop key="hibernate.globally_quoted_identifiers">true</prop>
+                <prop key="hibernate.auto_quote_keyword">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- HibernateTransactionManager -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- @Repository exception translation-->
+    <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+    <bean id="repository" abstract="true" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="ingredientRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
+        <constructor-arg name="entity" ref="ingredientDecl" />
+    </bean>
+
+    <bean id="shaurmaRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
+        <constructor-arg name="entity" ref="shaurmaDecl" />
+    </bean>
+
+    <bean id="menuEntryRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
+        <constructor-arg name="entity" ref="menuEntryDecl" />
+    </bean>
+
+    <bean id="orderRepository" class="ru.mera.sergeynazin.repository.impl.HibernateRepositoryImpl" parent="repository" >
+        <constructor-arg name="entity" ref="orderDecl" />
+    </bean>
+
+    <!-- scoped as prototype to be garbage collected after repository initialization -->
+    <bean id="menuEntryDecl" class="ru.mera.sergeynazin.model.MenuEntry" scope="prototype" />
+    <bean id="ingredientDecl" class="ru.mera.sergeynazin.model.Ingredient" scope="prototype" />
+    <bean id="orderDecl" class="ru.mera.sergeynazin.model.Order" scope="prototype" />
+    <bean id="shaurmaDecl" class="ru.mera.sergeynazin.model.Shaurma" scope="prototype" />
+
+</beans>
