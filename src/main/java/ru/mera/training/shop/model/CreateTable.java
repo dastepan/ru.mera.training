@@ -17,9 +17,10 @@ public class CreateTable {
 
     public String createTableStatus() {
         jdbcTemplate.execute("DROP TABLE IF EXISTS public.ingredients");
+
         jdbcTemplate.execute("CREATE TABLE public.ingredients\n" +
                 "(\n" +
-                "    id integer NOT NULL,\n" +
+                "    id serial NOT NULL,\n" +
                 "    name character varying COLLATE pg_catalog.\"default\" NOT NULL,\n" +
                 "    cost integer NOT NULL,\n" +
                 "    CONSTRAINT ingredients_pkey PRIMARY KEY (id)\n" +

@@ -44,7 +44,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("ru.mera.training.shop.entity"); // путь к лассам, связанным с базой данных
+        sessionFactory.setPackagesToScan("ru.mera.training.shop.entity"); // путь к классам, связанным с базой данных
         sessionFactory.setHibernateProperties(properties());
         return sessionFactory;
     }
