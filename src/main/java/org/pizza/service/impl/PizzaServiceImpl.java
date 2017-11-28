@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class PizzaServiceImpl implements ServiceCommand<Pizza> {
+
+    @Autowired
     private PizzaRepository repository;//внизу Autowire над getter
 
     @Override
@@ -29,8 +31,4 @@ public class PizzaServiceImpl implements ServiceCommand<Pizza> {
         return repository.findByName(name);
     }
 
-    @Autowired
-    public PizzaRepository getRepository() {
-        return repository;
-    }
 }

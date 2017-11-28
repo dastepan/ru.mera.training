@@ -15,7 +15,7 @@ public class Pizza implements Serializable {
     private int id;
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menuId")
+    @JoinColumn(name="menuId")
     private Menu menu;
     @ManyToMany
     @JoinTable(

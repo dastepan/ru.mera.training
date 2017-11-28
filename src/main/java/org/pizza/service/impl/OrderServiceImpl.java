@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class OrderServiceImpl implements ServiceCommand<Order> {
+
+    @Autowired
     private OrderRepository repository;//внизу Autowire над getter
 
 
@@ -27,8 +29,4 @@ public class OrderServiceImpl implements ServiceCommand<Order> {
         return repository.findAll();
     }
 
-    @Autowired
-    public OrderRepository getRepository() {
-        return repository;
-    }
 }

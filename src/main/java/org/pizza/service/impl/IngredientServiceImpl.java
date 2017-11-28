@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class IngredientServiceImpl implements ServiceCommand<Ingredient> {
+    @Autowired
     private IngredientRepository repository;//внизу Autowire над getter
 
     @Override
@@ -27,12 +28,6 @@ public class IngredientServiceImpl implements ServiceCommand<Ingredient> {
 
     public List<Ingredient> getByName(String name) {
         return repository.findByName(name);
-    }
-
-
-    @Autowired
-    public IngredientRepository getRepository() {
-        return repository;
     }
 
 }

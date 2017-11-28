@@ -10,7 +10,7 @@ $(function(){
 
     function getIt() {
         $.ajax({
-            url: "menu",
+            url: "pizzamarket/menu",
             type: "GET",
             success: draw
         });

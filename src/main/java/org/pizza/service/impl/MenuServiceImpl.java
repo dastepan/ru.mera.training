@@ -1,19 +1,27 @@
 package org.pizza.service.impl;
 
+import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.pizza.model.Ingredient;
 import org.pizza.model.Menu;
+import org.pizza.model.Menu_;
 import org.pizza.model.Pizza;
 import org.pizza.repository.impl.MenuRepository;
 import org.pizza.service.ServiceCommand;
 import org.pizza.service.utilities.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import java.util.HashMap;
+import java.util.List;
 
-import java.util.*;
 
 public class MenuServiceImpl implements ServiceCommand<Menu> {
     private final String INGREDIENT_PATH="ingredients.json";
@@ -21,14 +29,20 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
     @Autowired
     private EntityManagerFactory emf;
     private EntityManager em;
-    private MenuRepository menuRepository;//тянется через геттер
+    private CriteriaBuilder criteriaBuilder;
+    @Autowired
+    private MenuRepository menuRepository;
     @Autowired
     private JsonUtil jsonUtil;
 
-//    @Transactional(propagation= Propagation.REQUIRED, rollbackFor=Exception.class)
+
     public void init() {
-        Menu mainMenu=new Menu();
         em=emf.createEntityManager();
+        criteriaBuilder=em.unwrap(Session.class).getCriteriaBuilder();
+
+
+        Menu mainMenu=new Menu();
+
         em.getTransaction().begin();
         HashMap<String,Ingredient> initIngredientsMap=new HashMap<>();
         for (Object obj : jsonUtil.readFile(INGREDIENT_PATH)) {
@@ -50,6 +64,7 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
                 pizza.addIngredient(ingredient);
             }
             pizza.setName((String) jsonPizza.get("name"));
+            pizza.setMenu(mainMenu);
             mainMenu.addPizza(pizza);
             em.persist(pizza);
         }
@@ -58,9 +73,8 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
         em.getTransaction().commit();
     }
 
-    @Autowired
-    public MenuRepository getRepository() {
-        return menuRepository;
+
+    MenuServiceImpl(){
     }
 
     @Override
@@ -73,9 +87,20 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
         menuRepository.delete(entity);
     }
 
+
     @Override
+//    @Transactional(readOnly = true)
     public List<Menu> getAll() {
-        return menuRepository.findAll();
+        CriteriaQuery<Menu> criteriaQuery = criteriaBuilder.createQuery(Menu.class);
+        Root<Menu> entityRoot = criteriaQuery.from(Menu.class);
+        entityRoot.fetch(Menu_.pizzas, JoinType.LEFT);//присоединяем к записи leftJoin(заполняем список пицц в меню)
+        criteriaQuery.select(entityRoot).distinct(true);// distinct-убирает повторы
+    return em.createQuery(criteriaQuery).getResultList();
+    }
+
+
+    public List<Menu>getByName(String name){
+        return menuRepository.findByName(name);
     }
 
 }
