@@ -10,8 +10,11 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import ru.mera.training.shop.dao.IngredientDao;
+import ru.mera.training.shop.dao.MenuDao;
 import ru.mera.training.shop.dao.dao.impl.IngredientDaoImpl;
+import ru.mera.training.shop.dao.dao.impl.MenuDaoImpl;
 import ru.mera.training.shop.entity.Ingredient;
+import ru.mera.training.shop.entity.Menu;
 import ru.mera.training.shop.model.CreateTable;
 
 @Configuration
@@ -61,5 +64,10 @@ public class AppConfig {
     @Bean
     public IngredientDao ingredientDao() {
         return new IngredientDaoImpl(Ingredient.class);
+    }
+
+    @Bean
+    public MenuDao menuDao(){
+        return new MenuDaoImpl(Menu.class);
     }
 }

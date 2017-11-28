@@ -1,17 +1,24 @@
 package ru.mera.training.shop.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "ingredients")
-public class Ingredient {
+public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int cost;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();
 
-    public Ingredient() {
+    public Menu() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
@@ -32,9 +39,5 @@ public class Ingredient {
 
     public void setCost(int cost) {
         this.cost = cost;
-    }
-
-    public int getId() {
-        return id;
     }
 }

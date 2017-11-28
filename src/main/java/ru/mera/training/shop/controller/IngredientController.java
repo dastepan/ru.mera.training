@@ -17,26 +17,24 @@ public class IngredientController {
 
     @ResponseBody
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-
     public List<Ingredient> getAllIngredients() {
         return ingredientService.getAllIngredients();
     }
 
-    // localhost:8080/ingredient/get/  id number
+    // localhost:8080/ingredient/get/id/id_number
     @ResponseBody
     @RequestMapping(value = "/get/id/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-
     public Ingredient getIngredientById(@PathVariable(value = "id") String id) {
         return ingredientService.getIngredientById(Integer.parseInt(id));
     }
 
     @ResponseBody
     @RequestMapping(value = "/get/name/{name}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-
     public List<Ingredient> getIngredientsByName(@PathVariable(value = "name") String name) {
         return ingredientService.getIngredientsByName(name);
     }
-//TODO realize validation of input data
+
+    //TODO realize validation of input data
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
     public Ingredient addIngredient(@RequestBody Ingredient ingredient) {

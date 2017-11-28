@@ -44,7 +44,7 @@ public interface IngredientService {
     /**
      * method to get list of ingredients which have specified name
      *
-     * @param name   ingredient that should be deleted from DB
+     * @param name   ingredient's name to search
      * @return List of Ingredients with same name
      **/
     List<Ingredient> getIngredientsByName(String name);

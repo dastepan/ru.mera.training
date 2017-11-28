@@ -15,6 +15,9 @@ public class User {
     @Column(name = "role_name")
     private String roleName;
 
+    public User() {
+    }
+
     public String getName() {
         return name;
     }
