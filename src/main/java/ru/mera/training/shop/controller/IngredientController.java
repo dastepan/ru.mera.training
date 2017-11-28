@@ -8,7 +8,6 @@ import ru.mera.training.shop.service.IngredientService;
 
 import java.util.List;
 
-// TODO: rename pathes for queries
 @Controller
 @RequestMapping("/ingredients")
 public class IngredientController {
@@ -37,7 +36,7 @@ public class IngredientController {
     public List<Ingredient> getIngredientsByName(@PathVariable(value = "name") String name) {
         return ingredientService.getIngredientsByName(name);
     }
-
+//TODO realize validation of input data
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
     public Ingredient addIngredient(@RequestBody Ingredient ingredient) {
@@ -56,11 +55,10 @@ public class IngredientController {
     public Ingredient deleteIngredient(@PathVariable(value = "id") String id) {
         return ingredientService.deleteIngredient(Integer.parseInt(id));
     }
-    //        return null;
-    //    public Ingredient deleteIngredient(@RequestParam(value = "id") String id) {
+
+//    // localhost:8080/ingredients/delete?id=5
     //    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     //    @ResponseBody
-//    // localhost:8080/ingredients/delete?id=5
-
+    //    public Ingredient deleteIngredient(@RequestParam(value = "id") String id) {
 //    }
 }

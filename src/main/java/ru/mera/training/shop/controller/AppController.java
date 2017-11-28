@@ -6,14 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.mera.training.shop.model.CreateTable;
 import ru.mera.training.shop.service.MessageService;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 @Controller                 // Объявить как контроллер
 public class AppController {
@@ -26,9 +24,15 @@ public class AppController {
         this.createTable = createTable;
     }
 
+//    @RequestMapping({"/","/home"}) // Обрабатывать запросы на получение главной страницы
+//    public String showHomePage(Model model) {
+//        model.addAttribute("shop", messageService.getMessageInfo("Welcome"));
+//        return "home";
+//    }
+
     @RequestMapping({"/","/home"}) // Обрабатывать запросы на получение главной страницы
     public String showHomePage(Model model) {
-        model.addAttribute("shop", messageService.getMessageInfo("Welcome"));
+      //  model.addAttribute("shop", messageService.getMessageInfo("Welcome"));
         return "home";
     }
 
