@@ -40,4 +40,12 @@ public class Menu {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
