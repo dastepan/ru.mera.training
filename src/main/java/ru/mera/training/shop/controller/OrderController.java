@@ -2,10 +2,7 @@ package ru.mera.training.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.mera.training.shop.entity.Order;
 import ru.mera.training.shop.service.OrderService;
 
@@ -19,13 +16,32 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = "/get/all", method = RequestMethod.GET)
-    public List<Order> getAllOrders(){
+    public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/get/id/{id}" , method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public Order getOrderById(@PathVariable(value = "id") String id){
+    @RequestMapping(value = "/get/id/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public Order getOrderById(@PathVariable(value = "id") String id) {
         return orderService.getOrderById(id);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
+    public Order addOrder(@RequestBody Order order) {
+        return orderService.addOrder(order);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public Order updateOrder(@RequestBody Order order) {
+        return orderService.updateOrder(order);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public Order deleteOrder(@PathVariable(value = "id") String id) {
+        return orderService.deleteOrder(id);
+    }
 }
+

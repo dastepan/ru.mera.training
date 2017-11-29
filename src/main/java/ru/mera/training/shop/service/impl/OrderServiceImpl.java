@@ -25,16 +25,16 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order addOrder(Order order) {
-        return null;
+        return orderDao.add(order);
     }
 
     @Override
     public Order updateOrder(Order order) {
-        return null;
+        return orderDao.update(order);
     }
 
     @Override
-    public Order deleteOrder(int id) {
-        return null;
+    public Order deleteOrder(String id) {
+        return orderDao.delete(getOrderById(id));
     }
 }

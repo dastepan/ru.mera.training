@@ -42,5 +42,5 @@ public interface OrderService {
      * @param id order's id that should be deleted from DB
      * @return deleted Order
      **/
-    Order deleteOrder(int id);
+    Order deleteOrder(String id);
 }

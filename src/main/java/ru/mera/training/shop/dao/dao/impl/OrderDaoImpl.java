@@ -7,10 +7,10 @@ public class OrderDaoImpl extends BasicDaoImpl<Order> implements OrderDao {
     public OrderDaoImpl(Class<Order> entityClass) {
         super(entityClass);
     }
-//TODO
+
     @Override
     public Order getOrderById(String id) {
         return (Order) sessionFactory.getCurrentSession()
-                .createQuery("from Order as i where i.id = ?").setParameter();
+                .createQuery("from Order as o where o.id = ?").setParameter(0, id);
     }
 }
