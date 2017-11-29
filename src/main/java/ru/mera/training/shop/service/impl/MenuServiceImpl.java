@@ -9,7 +9,7 @@ import ru.mera.training.shop.service.MenuService;
 import java.util.List;
 
 @Service("MenuService")
-public class MenuServiceImpl implements MenuService{
+public class MenuServiceImpl implements MenuService {
 
     @Autowired
     private MenuDao menuDao;
@@ -21,26 +21,26 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public Menu getMenuById(int id) {
-        return null;
+        return menuDao.getById(id);
     }
 
     @Override
     public Menu addMenu(Menu menu) {
-        return null;
+        return menuDao.add(menu);
     }
 
     @Override
     public Menu updateMenu(Menu menu) {
-        return null;
+        return menuDao.update(menu);
     }
 
     @Override
     public Menu deleteMenu(int id) {
-        return null;
+        return menuDao.delete(getMenuById(id));
     }
 
     @Override
     public List<Menu> getMenuByName(String name) {
-        return null;
+        return menuDao.getMenuByName(name);
     }
 }
