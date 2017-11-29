@@ -12,12 +12,15 @@ import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import ru.mera.training.shop.dao.IngredientDao;
 import ru.mera.training.shop.dao.MenuDao;
 import ru.mera.training.shop.dao.OrderDao;
+import ru.mera.training.shop.dao.ProductDao;
 import ru.mera.training.shop.dao.dao.impl.IngredientDaoImpl;
 import ru.mera.training.shop.dao.dao.impl.MenuDaoImpl;
 import ru.mera.training.shop.dao.dao.impl.OrderDaoImpl;
+import ru.mera.training.shop.dao.dao.impl.ProductDaoImpl;
 import ru.mera.training.shop.entity.Ingredient;
 import ru.mera.training.shop.entity.Menu;
 import ru.mera.training.shop.entity.Order;
+import ru.mera.training.shop.entity.Product;
 import ru.mera.training.shop.model.CreateTable;
 
 @Configuration
@@ -77,5 +80,10 @@ public class AppConfig {
     @Bean
     public OrderDao orderDao(){
         return new OrderDaoImpl(Order.class);
+    }
+
+    @Bean
+    public ProductDao productDao(){
+        return new ProductDaoImpl(Product.class);
     }
 }
