@@ -23,7 +23,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = "/get/id/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public Order getOrderById(@PathVariable(value = "id") String id) {
-        return orderService.getOrderById(id);
+        return orderService.getOrderById(Integer.parseInt(id));
     }
 
     @ResponseBody
@@ -41,7 +41,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public Order deleteOrder(@PathVariable(value = "id") String id) {
-        return orderService.deleteOrder(id);
+        return orderService.deleteOrder(Integer.parseInt(id));
     }
 }
 

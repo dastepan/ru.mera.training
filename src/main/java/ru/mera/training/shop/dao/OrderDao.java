@@ -4,12 +4,4 @@ import ru.mera.training.shop.entity.Order;
 
 public interface OrderDao extends BasicDao<Order> {
 
-    /**
-     * method for receiving order with specified id
-     *
-     * @param id - specified id (type String)
-     *
-     * @return Order
-     **/
-    Order getOrderById(String id);
 }

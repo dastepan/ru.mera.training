@@ -18,7 +18,7 @@ public interface OrderService {
      * @param id = order id
      * @return Order
      **/
-    Order getOrderById(String id);
+    Order getOrderById(int id);
 
     /**
      * method to add new order to DB
@@ -42,5 +42,5 @@ public interface OrderService {
      * @param id order's id that should be deleted from DB
      * @return deleted Order
      **/
-    Order deleteOrder(String id);
+    Order deleteOrder(int id);
 }
