@@ -1,46 +1,41 @@
 package org.pizza.model;
 
 
-import org.pizza.service.utilities.AutoIncrementer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
 @Entity
 @Table(name="orders")
 public class Order implements Serializable {
-    @Transient
-    private AutoIncrementer autoIncrement;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String orderNumber;
+    @Column(name = "id", nullable = false, updatable = false)
+    private int id;
     private float totalCoast;
     @ManyToMany(mappedBy = "orders")
-    private Set<Pizza> pizzaSet;
-
+    @JsonIgnoreProperties("orders")
+    private List<Pizza> pizzas;
 
     public Order() {
+        pizzas=new ArrayList<>();
     }
 
-    public void init(){
-        orderNumber=new Date(System.currentTimeMillis())+" ";
-        orderNumber=orderNumber+ autoIncrement.getNumber();
+    public List<Pizza> getPizzas() {
+        return pizzas;
     }
-
-    public Set<Pizza> getPizzaSet() {
-        return pizzaSet;
+    public void setPizzas(List<Pizza> pizzaSet) {
+        this.pizzas = pizzaSet;
     }
-
-    public void setPizzaSet(Set<Pizza> pizzaSet) {
-        this.pizzaSet = pizzaSet;
-    }
-
     public float getTotalCoast() {
         totalCoast=0;
-            for(Pizza s:pizzaSet){
+            for(Pizza s: pizzas){
                 totalCoast+=s.getCost();
             }
         return totalCoast;
@@ -48,19 +43,6 @@ public class Order implements Serializable {
     public void setTotalCoast(float totalCoast) {
         this.totalCoast = totalCoast;
     }
-    public AutoIncrementer getAutoIncrement() {
-        return autoIncrement;
-    }
-    public void setAutoIncrement(AutoIncrementer autoIncrement) {
-        this.autoIncrement = autoIncrement;
-    }
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,13 +50,10 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
-        if (Float.compare(order.totalCoast, totalCoast) != 0) return false;
-        if (!orderNumber.equals(order.orderNumber)) return false;
-        return pizzaSet != null ? pizzaSet.equals(order.pizzaSet) : order.pizzaSet == null;
+        return id == order.id;
     }
-
     @Override
     public int hashCode() {
-        return orderNumber.hashCode();
+        return id;
     }
 }

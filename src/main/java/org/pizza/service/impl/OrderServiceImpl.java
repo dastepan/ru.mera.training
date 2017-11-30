@@ -13,20 +13,28 @@ public class OrderServiceImpl implements ServiceCommand<Order> {
     @Autowired
     private OrderRepository repository;//внизу Autowire над getter
 
-
     @Override
     public void save(Order entity) {
         repository.saveAndFlush(entity);
     }
-
     @Override
     public void delete(Order entity) {
         repository.delete(entity);
     }
-
     @Override
     public List<Order> getAll() {
         return repository.findAll();
     }
-
+    @Override
+    public void add(Order entity) {
+        repository.saveAndFlush(entity);
+    }
+    @Override
+    public void remove(int id){
+        repository.delete(repository.getOne(id));
+    }
+    @Override
+    public Order getById(int id){
+        return repository.getOne(id);
+    }
 }

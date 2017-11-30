@@ -17,27 +17,8 @@
 
 <body>
 
-<table id="tasks" align="center" width="600">
-</table>
+<h1> Main page - here are some reference to other pieces application </h1>
 
-<table id="formAdd" align="center" width="600">
-    <form action="add" method="post">
-        <tr>
-            <td>
-                Time <input type="text" name="timeField" value="" size=15 maxlength=20>
-            </td>
-
-            <td>
-                Task <input type="text" name="taskField" value="" size=15 maxlength=20>
-            </td>
-
-            <td>
-                <input name="submitForm" type="submit" value="Add task" onclick="return false"/>
-            </td>
-
-        </tr>
-    </form>
-</table>
 </body>
 </html>
 

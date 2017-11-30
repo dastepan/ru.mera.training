@@ -26,7 +26,7 @@
 
     <bean id="jsonUtil" class="org.pizza.service.utilities.JsonUtil"/>
     <bean id="cntx" class="org.pizza.service.utilities.Cntx"/>
-    <bean id="autoincrementer" class="org.pizza.service.utilities.AutoIncrementer"/>
+
 
     <bean id="ingredientService" class="org.pizza.service.impl.IngredientServiceImpl" />
     <bean id="menuService" class="org.pizza.service.impl.MenuServiceImpl" init-method="init" depends-on="jsonUtil"/>

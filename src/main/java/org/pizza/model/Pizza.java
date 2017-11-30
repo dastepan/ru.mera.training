@@ -1,6 +1,8 @@
 package org.pizza.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,18 +18,21 @@ public class Pizza implements Serializable {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="menuId")
+    @JsonIgnoreProperties("pizzas")
     private Menu menu;
     @ManyToMany
     @JoinTable(
             name="pizzaAndIngredients",
             joinColumns = {@JoinColumn(name="pizza_id")},
             inverseJoinColumns = {@JoinColumn(name="ingredient_id")})
+    @JsonIgnoreProperties("pizzas")
     private List<Ingredient> ingredients;
     @ManyToMany
     @JoinTable(
         name = "pizzaAndOrder",
         joinColumns = {@JoinColumn(name="pizza_id")},
         inverseJoinColumns = {@JoinColumn(name="order_id")})
+    @JsonIgnoreProperties("pizzas")
     private List<Order> orders;
     @Transient
     private float cost;

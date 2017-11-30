@@ -11,7 +11,6 @@ import org.pizza.repository.impl.MenuRepository;
 import org.pizza.service.ServiceCommand;
 import org.pizza.service.utilities.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,10 +30,9 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
     private EntityManager em;
     private CriteriaBuilder criteriaBuilder;
     @Autowired
-    private MenuRepository menuRepository;
+    private MenuRepository repository;
     @Autowired
     private JsonUtil jsonUtil;
-
 
     public void init() {
         em=emf.createEntityManager();
@@ -72,24 +70,18 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
         em.persist(mainMenu);
         em.getTransaction().commit();
     }
-
-
     MenuServiceImpl(){
     }
 
     @Override
     public void save(Menu entity) {
-        menuRepository.saveAndFlush(entity);
+        repository.saveAndFlush(entity);
     }
-
     @Override
     public void delete(Menu entity) {
-        menuRepository.delete(entity);
+        repository.delete(entity);
     }
-
-
     @Override
-//    @Transactional(readOnly = true)
     public List<Menu> getAll() {
         CriteriaQuery<Menu> criteriaQuery = criteriaBuilder.createQuery(Menu.class);
         Root<Menu> entityRoot = criteriaQuery.from(Menu.class);
@@ -97,10 +89,21 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
         criteriaQuery.select(entityRoot).distinct(true);// distinct-убирает повторы
     return em.createQuery(criteriaQuery).getResultList();
     }
-
+    @Override
+    public void add(Menu entity) {
+        repository.saveAndFlush(entity);
+    }
+    @Override
+    public void remove(int id){
+        repository.delete(repository.getOne(id));
+    }
+    @Override
+    public Menu getById(int id){
+        return repository.getOne(id);
+    }
 
     public List<Menu>getByName(String name){
-        return menuRepository.findByName(name);
+        return repository.findByName(name);
     }
 
 }

@@ -1,5 +1,7 @@
 package org.pizza.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Ingredient implements Serializable{
     @Column(name = "cost", length = 15)
     private float cost;
     @ManyToMany(mappedBy = "ingredients")
+    @JsonIgnoreProperties("ingredients")
     private List<Pizza> pizzas;
 
 
