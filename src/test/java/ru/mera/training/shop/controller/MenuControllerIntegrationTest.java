@@ -2,6 +2,7 @@ package ru.mera.training.shop.controller;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import ru.mera.training.shop.entity.Menu;
@@ -16,6 +17,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class MenuControllerIntegrationTest {
     private static String ROOT;
@@ -24,7 +26,7 @@ public class MenuControllerIntegrationTest {
     private static String GET_BY_ID;
     private static String GET_ALL;
     private static String DELETE;
-    private static String CONTROLLER = "/menu";
+    private static final String CONTROLLER = "/menu";
 
     @BeforeClass
     public static void initVariables() throws IOException {
@@ -54,6 +56,76 @@ public class MenuControllerIntegrationTest {
         assertEquals("OK", responseEntity.getStatusCode().getReasonPhrase());
         Menu receivedMenu = responseEntity.getBody();
         assertNotNull(receivedMenu.getName());
+    }
+
+    @Test
+    public void updateMenu(){
+        Menu menu = createMenu();
+        menu.setName("Italian menu");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<Menu> httpEntity = new HttpEntity<>(menu, httpHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Menu> responseEntity = restTemplate.exchange(
+                ROOT + UPDATE,
+                HttpMethod.POST,
+                httpEntity,
+                Menu.class
+        );
+
+        assertEquals("OK", responseEntity.getStatusCode().getReasonPhrase());
+        Menu receivedMenu = responseEntity.getBody();
+        assertEquals("Italian menu", receivedMenu.getName());
+    }
+
+    @Test
+    public void deleteMenu(){
+        Menu menu = createMenu();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Menu> responseEntity = restTemplate.exchange(
+                ROOT + DELETE + "/{id}",
+                HttpMethod.DELETE,
+                null,
+                Menu.class,
+                menu.getId()
+        );
+
+        assertEquals("OK", responseEntity.getStatusCode().getReasonPhrase());
+        Menu receivedMenu = responseEntity.getBody();
+        assertNotNull(receivedMenu.getName());
+
+        ResponseEntity<Menu> responseEntityForDeletedMenu = restTemplate.exchange(
+                ROOT + GET_BY_ID + "/{id}",
+                HttpMethod.GET,
+                null,
+                Menu.class,
+                menu.getId()
+        );
+
+        assertEquals("OK", responseEntity.getStatusCode().getReasonPhrase());
+        assertNull(responseEntityForDeletedMenu.getBody());
+    }
+
+    @Test
+    public void getAllMenu(){
+        createMenu();
+        createMenu();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<Menu>> listResponseEntity = restTemplate.exchange(
+                ROOT + GET_ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Menu>>() {
+                }
+        );
+
+        List<Menu> menuList = listResponseEntity.getBody();
+        assertNotNull(menuList.get(0));
+        assertNotNull(menuList.get(1));
     }
 
     private Menu createMenu() {

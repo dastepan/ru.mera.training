@@ -2,17 +2,13 @@ package ru.mera.training.shop.controller;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import ru.mera.training.shop.entity.Ingredient;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -27,7 +23,7 @@ public class IngredientControllerIntegrationTest {
     private static String GET_BY_ID; // = "/get/id";
     private static String GET_ALL; // = "/get/all";
     private static String DELETE; // = "/delete/";
-    private static String CONTROLLER = "/ingredients";
+    private static final String CONTROLLER = "/ingredients";
 
     @BeforeClass
     public static void initVariables() throws IOException {
@@ -128,8 +124,8 @@ public class IngredientControllerIntegrationTest {
         );
 
         List<Ingredient> ingredientList = responseEntity.getBody();
+        assertNotNull(ingredientList.get(0));
         assertNotNull(ingredientList.get(1));
-        assertNotNull(ingredientList.get(2));
     }
 
     private Ingredient createIngredient() {
