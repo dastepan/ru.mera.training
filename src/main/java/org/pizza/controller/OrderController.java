@@ -14,23 +14,23 @@ public class OrderController {
     private OrderServiceImpl orderService;
 
     @GetMapping("/get/all")
-    public List getAllMenu() {
+    public List getAllOrder() {
         return orderService.getAll();
     }
     @GetMapping("/get/id/{id}")
-    public Order getMenuById(@PathVariable("id") String id) {
+    public Order getOrderById(@PathVariable("id") String id) {
         return orderService.getById(Integer.parseInt(id));
     }
     @PutMapping("/add")
-    public void addMenu(@RequestBody Order entity) {
+    public void addOrder(@RequestBody Order entity) {
         orderService.add(entity);
     }
     @PostMapping("/update")
-    public void updateMenu(@RequestBody Order entity) {
+    public void updateOrder(@RequestBody Order entity) {
         orderService.add(entity);
     }
     @DeleteMapping("/delete/{id}")
-    public void deleteMenu(@PathVariable("id") String id) {
+    public void deleteOrder(@PathVariable("id") String id) {
         orderService.remove(Integer.parseInt(id));
     }
 }

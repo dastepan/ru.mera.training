@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/pizza")
 public class PizzaController {
     @Autowired
     private PizzaServiceImpl pizzaService;
 
     @GetMapping("/get/all")
-    public List getAllMenu() {
+    public List getAllPizza() {
         return pizzaService.getAll();
     }
     @GetMapping("/get/id/{id}")
-    public Pizza getMenuById(@PathVariable("id") String id) {
+    public Pizza getPizzaById(@PathVariable("id") String id) {
         return pizzaService.getById(Integer.parseInt(id));
     }
     @PutMapping("/add")
-    public void addMenu(@RequestBody Pizza entity) {
+    public void addPizza(@RequestBody Pizza entity) {
         pizzaService.add(entity);
     }
     @PostMapping("/update")
-    public void updateMenu(@RequestBody Pizza entity) {
+    public void updatePizza(@RequestBody Pizza entity) {
         pizzaService.add(entity);
     }
     @DeleteMapping("/delete/{id}")
-    public void deleteMenu(@PathVariable("id") String id) {
+    public void deletePizza(@PathVariable("id") String id) {
         pizzaService.remove(Integer.parseInt(id));
     }
 }
