@@ -1,16 +1,36 @@
 package org.pizza.service.impl;
 
+import org.hibernate.Session;
 import org.pizza.model.Pizza;
+import org.pizza.model.Pizza_;
+import org.pizza.model.supportClasses.Ingredient_;
 import org.pizza.repository.impl.PizzaRepository;
 import org.pizza.service.ServiceCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class PizzaServiceImpl implements ServiceCommand<Pizza> {
 
     @Autowired
     private PizzaRepository repository;//внизу Autowire над getter
+    @Autowired
+    private EntityManagerFactory emf;
+    private EntityManager em;
+    private CriteriaBuilder criteriaBuilder;
+
+    public void init(){
+        em=emf.createEntityManager();
+        criteriaBuilder=em.unwrap(Session.class).getCriteriaBuilder();
+    }
+    PizzaServiceImpl(){
+    }
 
     @Override
     public void save(Pizza entity) {
@@ -22,7 +42,12 @@ public class PizzaServiceImpl implements ServiceCommand<Pizza> {
     }
     @Override
     public List<Pizza> getAll() {
-        return repository.findAll();
+        CriteriaQuery<Pizza> criteriaQuery = criteriaBuilder.createQuery(Pizza.class);
+        Root<Pizza> entityRoot = criteriaQuery.from(Pizza.class);
+        entityRoot.fetch(Pizza_.ingredients, JoinType.LEFT);//присоединяем к записи leftJoin(заполняем список пицц в меню)
+        entityRoot.fetch(Pizza_.menu, JoinType.LEFT);//присоединяем к записи leftJoin(заполняем список пицц в меню)
+        criteriaQuery.select(entityRoot).distinct(true);// distinct-убирает повторы
+        return em.createQuery(criteriaQuery).getResultList();
     }
     @Override
     public void add(Pizza entity) {

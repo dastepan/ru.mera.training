@@ -12,7 +12,8 @@ public class OrderServiceImpl implements ServiceCommand<Order> {
 
     @Autowired
     private OrderRepository repository;//внизу Autowire над getter
-
+    public void init(){
+    }
     @Override
     public void save(Order entity) {
         repository.saveAndFlush(entity);

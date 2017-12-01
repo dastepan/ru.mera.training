@@ -87,7 +87,7 @@ public class MenuServiceImpl implements ServiceCommand<Menu> {
         Root<Menu> entityRoot = criteriaQuery.from(Menu.class);
         entityRoot.fetch(Menu_.pizzas, JoinType.LEFT);//присоединяем к записи leftJoin(заполняем список пицц в меню)
         criteriaQuery.select(entityRoot).distinct(true);// distinct-убирает повторы
-    return em.createQuery(criteriaQuery).getResultList();
+        return em.createQuery(criteriaQuery).getResultList();
     }
     @Override
     public void add(Menu entity) {

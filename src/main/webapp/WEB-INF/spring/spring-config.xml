@@ -28,10 +28,10 @@
     <bean id="cntx" class="org.pizza.service.utilities.Cntx"/>
 
 
-    <bean id="ingredientService" class="org.pizza.service.impl.IngredientServiceImpl" />
+    <bean id="ingredientService" class="org.pizza.service.impl.IngredientServiceImpl" init-method="init" />
     <bean id="menuService" class="org.pizza.service.impl.MenuServiceImpl" init-method="init" depends-on="jsonUtil"/>
-    <bean id="orderService" class="org.pizza.service.impl.OrderServiceImpl" />
-    <bean id="pizzaService" class="org.pizza.service.impl.PizzaServiceImpl" />
+    <bean id="orderService" class="org.pizza.service.impl.OrderServiceImpl" init-method="init" />
+    <bean id="pizzaService" class="org.pizza.service.impl.PizzaServiceImpl" init-method="init"/>
 
 
 </beans>

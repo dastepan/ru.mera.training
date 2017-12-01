@@ -15,7 +15,8 @@ public class IngredientController {
 
     @GetMapping("/get/all")
     public List getAllIngredients() {
-        return ingredientService.getAll();
+        List<Ingredient> result = ingredientService.getAll();
+        return result;
     }
     @GetMapping("/get/id/{id}")
     public Ingredient getIngredientById(@PathVariable("id") String id) {

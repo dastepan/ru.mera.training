@@ -16,7 +16,7 @@ public class Pizza implements Serializable {
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="menuId")
     @JsonIgnoreProperties("pizzas")
     private Menu menu;

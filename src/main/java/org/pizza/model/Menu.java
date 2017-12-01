@@ -19,7 +19,7 @@ public class Menu implements Serializable {
     private int id;
     @Column
     private String name;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
     @JsonIgnoreProperties("menu")
     private List<Pizza> pizzas;
 
