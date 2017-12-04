@@ -9,10 +9,8 @@ import java.util.List;
 
 
 public interface IngredientRepository extends JpaRepository<Ingredient,Integer> {
-
     @Query("select ing from Ingredient ing where ing.name = :name")
     default List<Ingredient> findByName(@Param("name") String name) {
         return null;
     }
-
 }

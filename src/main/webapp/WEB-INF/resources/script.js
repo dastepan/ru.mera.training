@@ -35,18 +35,10 @@ function draw(response) {
 
 }
 
-// вызов функции по завершению загрузки страницы
+
     $(document).ready(function() {
-        // вызов функции после потери полем 'userName' фокуса
-        $('#menu').click()(
-            $('#menu').click()(function() {
-            $.ajax({
-                url : "pizzamarket/menu/get/all",     // URL - сервлет
-                type: "GET",
-                success : function(response) {
-                    // обработка ответа от сервера
-                    $('#ajaxUserServletResponse').text(response);
-                }
+        $.getJSON("pizzamarket/menu/get/all",
+            function(data){
+                $("#info").html(data);
             });
-        });
     });

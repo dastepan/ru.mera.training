@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@NamedQueries({
-        @NamedQuery(name="Ingredient.findByName",
-                query="SELECT e FROM Ingredient e WHERE e.name = :name")
-})
-
 @Entity
 @Table(name = "ingredients")
 public class Ingredient implements Serializable{

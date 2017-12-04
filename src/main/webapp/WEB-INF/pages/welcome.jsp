@@ -39,6 +39,20 @@
 
 
     <h2 id="menu">Menu</h2>
+    <div class="mainDiv">
+        <table border="1">
+            <caption>Main Menu</caption>
+            <tr>
+                <th>Pizza</th>
+                <th>Composition</th>
+                <th>Price</th>
+            </tr>
+            <tr><td>Four cheeses</td><td>sauce, cheese Cheddar, cheese Parmesan, cheese Mozzarella, cheese Dor Blue</td><td>275</td></tr>
+            <tr><td>Pepperoni</td><td>sauce, cheese Cheddar, pepperoni</td><td>110</td></tr>
+            <tr><td>Margarita</td><td>sauce, tomato, cheese Mozzarella, basil</td><td>120</td></tr>
+            <tr><td>Hawaiian</td><td>sauce, chicken, cheese Cheddar, pineapple</td><td>170</td></tr>
+        </table>
+    </div>
     <div id="info"></div>
     <div id="menuBall4" class="menuBall">
         <a href="#contents" class="ball greenball">
