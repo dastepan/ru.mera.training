@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import ru.mera.training.shop.dao.BasicDao;
 import ru.mera.training.shop.entity.Ingredient;
 
 import java.io.File;

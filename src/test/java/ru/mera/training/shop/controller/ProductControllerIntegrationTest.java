@@ -5,13 +5,17 @@ import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import ru.mera.training.shop.dto.ProductDTO;
+import ru.mera.training.shop.entity.Ingredient;
 import ru.mera.training.shop.entity.Product;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -80,21 +84,53 @@ public class ProductControllerIntegrationTest {
     }
 
     @Test
+    public void getProductById() {
+        createProduct();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Set<ProductDTO>> responseEntity = restTemplate.exchange(
+                ROOT + GET_ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Set<ProductDTO>>() {
+                }
+        );
+
+        Set<ProductDTO> productSet = responseEntity.getBody();
+        ProductDTO productDTO = productSet.iterator().next();
+
+        ResponseEntity<Product> foundEntity = restTemplate.exchange(
+                ROOT + GET_BY_ID + "/{id}",
+                HttpMethod.GET,
+                null,
+                Product.class,
+                productDTO.getId()
+        );
+        assertNotNull(foundEntity.getBody());
+        assertEquals(productDTO.getId(), foundEntity.getBody().getId());
+        assertEquals(productDTO.getName(), foundEntity.getBody().getName());
+        assertEquals(productDTO.getIngredientSet().size(), foundEntity.getBody().getIngredientSet().size());
+    }
+
+    @Test
     public void deleteProduct() {
         Product product = createProduct();
 
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.getProductDTO(product);
+
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Product> responseEntity = restTemplate.exchange(
+        ResponseEntity<ProductDTO> responseEntity = restTemplate.exchange(
                 ROOT + DELETE + "/{id}",
                 HttpMethod.DELETE,
                 null,
-                Product.class,
+                ProductDTO.class,
                 product.getId()
         );
 
         assertEquals("OK", responseEntity.getStatusCode().getReasonPhrase());
-        Product receivedProduct = responseEntity.getBody();
-        assertNotNull(receivedProduct.getName());
+        ProductDTO receivedProductDTO = responseEntity.getBody();
+        assertNotNull(receivedProductDTO.getName());
 
         ResponseEntity<Product> responseEntityForDeletedProduct = restTemplate.exchange(
                 ROOT + GET_BY_ID + "/{id}",
@@ -114,17 +150,16 @@ public class ProductControllerIntegrationTest {
         createProduct();
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<Product>> responseEntity = restTemplate.exchange(
+        ResponseEntity<Set<ProductDTO>> responseEntity = restTemplate.exchange(
                 ROOT + GET_ALL,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Product>>() {
+                new ParameterizedTypeReference<Set<ProductDTO>>() {
                 }
         );
 
-        List<Product> productList = responseEntity.getBody();
-        assertNotNull(productList.get(0));
-        assertNotNull(productList.get(1));
+        Set<ProductDTO> productSet = responseEntity.getBody();
+        assertNotNull(productSet);
     }
 
     private Product createProduct() {
@@ -148,6 +183,25 @@ public class ProductControllerIntegrationTest {
     private Product prefilledProduct() {
         Product product = new Product();
         product.setName("@test_product");
+
+        Set<Ingredient> ingredients = new HashSet<>();
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("testIngredient 1");
+        ingredient.setCost(50);
+        ingredients.add(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("testIngredient 2");
+        ingredient.setCost(25);
+        ingredients.add(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("testIngredient 3");
+        ingredient.setCost(30);
+        ingredients.add(ingredient);
+
+        product.setIngredientSet(ingredients);
+
         return product;
     }
 }

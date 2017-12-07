@@ -1,6 +1,8 @@
 package ru.mera.training.shop.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ingredients")
@@ -10,12 +12,15 @@ public class Ingredient {
     private int id;
     private String name;
     private int cost;
-
-    public Ingredient() {
-    }
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ingredientSet")
+    private Set<Product> productSet = new HashSet<>();
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -34,7 +39,11 @@ public class Ingredient {
         this.cost = cost;
     }
 
-    public int getId() {
-        return id;
+    public Set<Product> getProductSet() {
+        return productSet;
+    }
+
+    public void setProductSet(Set<Product> productSet) {
+        this.productSet = productSet;
     }
 }

@@ -5,15 +5,15 @@ import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import ru.mera.training.shop.entity.Ingredient;
 import ru.mera.training.shop.entity.Menu;
 import ru.mera.training.shop.entity.Product;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -159,6 +159,8 @@ public class MenuControllerIntegrationTest {
         product1.setName("product1");
         product2.setName("product2");
 
+        product1.setIngredientSet(createIngredientSet());
+
         List<Product> productList = new ArrayList<>();
         productList.add(product1);
         productList.add(product2);
@@ -166,5 +168,24 @@ public class MenuControllerIntegrationTest {
         eastMenu.setProducts(productList);
 
         return eastMenu;
+    }
+
+    private Set<Ingredient> createIngredientSet(){
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream(new File("src/test/resources/ingredients.properties")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Set<String> keySet =  props.stringPropertyNames();
+        Set<Ingredient> ingredientSet = new HashSet<>();
+        for (String key:keySet) {
+
+            Ingredient ingredient = new Ingredient();
+            ingredient.setName(key);
+            ingredient.setCost(Integer.valueOf(props.getProperty(key)));
+            ingredientSet.add(ingredient);
+        }
+        return null;
     }
 }

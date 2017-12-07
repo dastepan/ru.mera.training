@@ -1,21 +1,12 @@
-package ru.mera.training.shop.entity;
+package ru.mera.training.shop.dto;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "orders")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class OrderDTO {
     private int orderNumber;
     private int totalCost;
     private String description;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "orderList")
-    private List<Product> productList;
-
-    public Order() {
-    }
+    private List<ProductDTO> productList;
 
     public int getOrderNumber() {
         return orderNumber;
@@ -39,5 +30,13 @@ public class Order {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<ProductDTO> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<ProductDTO> productList) {
+        this.productList = productList;
     }
 }

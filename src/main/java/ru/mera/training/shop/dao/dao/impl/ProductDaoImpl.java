@@ -5,6 +5,7 @@ import ru.mera.training.shop.entity.Ingredient;
 import ru.mera.training.shop.entity.Product;
 
 import java.util.List;
+import java.util.Set;
 
 public class ProductDaoImpl extends BasicDaoImpl<Product> implements ProductDao {
     public ProductDaoImpl(Class<Product> entityClass) {
@@ -17,4 +18,10 @@ public class ProductDaoImpl extends BasicDaoImpl<Product> implements ProductDao 
                 .createQuery("from Product as i where i.name = ?").setParameter(0, name).list()
                 ;
     }
+
+    @Override
+    public Set<Ingredient> getIngredientSet(int id) {
+        return null;
+    }
+
 }
