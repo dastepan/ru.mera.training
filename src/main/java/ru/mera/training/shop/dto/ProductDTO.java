@@ -36,6 +36,9 @@ public class ProductDTO {
     }
 
     public ProductDTO getProductDTO(Product product) {
+        if(product == null){
+            return null;
+        }
         setId(product.getId());
         setName(product.getName());
         Set<IngredientDTO> ingredientDTOS = new HashSet<>();
