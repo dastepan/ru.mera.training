@@ -3,7 +3,6 @@ package org.pizza.service.impl;
 import org.hibernate.Session;
 import org.pizza.model.Pizza;
 import org.pizza.model.Pizza_;
-import org.pizza.model.supportClasses.Ingredient_;
 import org.pizza.repository.impl.PizzaRepository;
 import org.pizza.service.ServiceCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 public class PizzaServiceImpl implements ServiceCommand<Pizza> {
 
     @Autowired
-    private PizzaRepository repository;//внизу Autowire над getter
+    private PizzaRepository repository;
     @Autowired
     private EntityManagerFactory emf;
     private EntityManager em;

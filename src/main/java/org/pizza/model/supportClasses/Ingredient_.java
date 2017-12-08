@@ -1,7 +1,7 @@
 package org.pizza.model.supportClasses;
 
-import org.pizza.model.Ingredient;
 import org.pizza.model.Pizza;
+import org.pizza.model.Ingredient;
 
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;

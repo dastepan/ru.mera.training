@@ -1,9 +1,9 @@
 package org.pizza.service.impl;
 
 import org.hibernate.Session;
-import org.pizza.model.Ingredient;
 import org.pizza.model.Ingredient_;
 import org.pizza.repository.impl.IngredientRepository;
+import org.pizza.model.Ingredient;
 import org.pizza.service.ServiceCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class IngredientServiceImpl implements ServiceCommand<Ingredient> {
     @Autowired
-    private IngredientRepository repository;//внизу Autowire над getter
+    private IngredientRepository repository;
     @Autowired
     private EntityManagerFactory emf;
     private EntityManager em;

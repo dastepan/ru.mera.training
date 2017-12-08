@@ -25,8 +25,6 @@
     </bean>
 
     <bean id="jsonUtil" class="org.pizza.service.utilities.JsonUtil"/>
-    <bean id="cntx" class="org.pizza.service.utilities.Cntx"/>
-
 
     <bean id="ingredientService" class="org.pizza.service.impl.IngredientServiceImpl" init-method="init" />
     <bean id="menuService" class="org.pizza.service.impl.MenuServiceImpl" init-method="init" depends-on="jsonUtil"/>
